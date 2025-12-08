@@ -4,8 +4,21 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Arrays;
+import java.util.Scanner;
+
+/** Labb 3 ITHS 2025, JUV25D
+ *
+ * Prompt for Username: and then Password: on startup and validate them against the account table (name + password)
+ * If the login is invalid, print a message containing the word invalid and allow exiting via option 0
+ * If the login is valid, present a menu with options
+ * Use the DB settings provided via APP_JDBC_URL, APP_DB_USER, APP_DB_PASS (already resolved in Main).
+ *
+ * @Author Daniel Marton
+ */
 
 public class Main {
+
+    private int MAX_ATTEMPTS = 5;
 
     static void main(String[] args) {
         if (isDevMode(args)) {
@@ -31,7 +44,12 @@ public class Main {
             throw new RuntimeException(e);
         }
         //Todo: Starting point for your code
-        System.out.println("Database connection established");
+        boolean loggedIn = Logic.login(MAX_ATTEMPTS);
+        if (loggedIn) {
+            Logic.menu();
+        }
+
+
     }
 
     /**
@@ -60,4 +78,10 @@ public class Main {
         }
         return (v == null || v.trim().isEmpty()) ? null : v.trim();
     }
+
+
+
+
+
+
 }
