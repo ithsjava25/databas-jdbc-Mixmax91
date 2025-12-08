@@ -1,11 +1,18 @@
 package com.example;
 
+import javax.sql.DataSource;
+import java.sql.Connection;
 import java.util.Scanner;
 
 public class Logic {
 
     private static final Scanner scanner = new Scanner(System.in);
-    private static final UserRepository userRepo = new UserRepositoryImpl();
+    private static UserRepository userRepo;
+
+    public static void initialize(DataSource dataSource) {
+        userRepo = new UserRepositoryImpl(dataSource);
+    }
+
     public static boolean login(int maxAttempts) {
         int attempts = 0;
         boolean loggedIn = false;

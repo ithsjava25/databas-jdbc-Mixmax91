@@ -1,5 +1,7 @@
 package com.example;
 
+import javax.sql.DataSource;
+import javax.xml.crypto.Data;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -33,17 +35,10 @@ public class Main {
         String dbUser = resolveConfig("APP_DB_USER", "APP_DB_USER");
         String dbPass = resolveConfig("APP_DB_PASS", "APP_DB_PASS");
 
-        if (jdbcUrl == null || dbUser == null || dbPass == null) {
-            throw new IllegalStateException(
-                    "Missing DB configuration. Provide APP_JDBC_URL, APP_DB_USER, APP_DB_PASS " +
-                            "as system properties (-Dkey=value) or environment variables.");
-        }
+        SimpleDriverManagerDataSource dataSource = new SimpleDriverManagerDataSource(jdbcUrl, dbUser, dbPass);
 
-        try (Connection connection = DriverManager.getConnection(jdbcUrl, dbUser, dbPass)) {
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
         //Todo: Starting point for your code
+        Logic.initialize(dataSource);
         boolean loggedIn = Logic.login(MAX_ATTEMPTS);
         if (loggedIn) {
             Logic.menu();
