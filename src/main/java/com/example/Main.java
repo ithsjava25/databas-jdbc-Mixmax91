@@ -20,7 +20,7 @@ import java.util.Scanner;
 
 public class Main {
 
-    private int MAX_ATTEMPTS = 5;
+    public final int MAX_ATTEMPTS = 5;
 
     static void main(String[] args) {
         if (isDevMode(args)) {
@@ -43,8 +43,6 @@ public class Main {
         if (loggedIn) {
             Logic.menu();
         }
-
-
     }
 
     /**
@@ -73,10 +71,4 @@ public class Main {
         }
         return (v == null || v.trim().isEmpty()) ? null : v.trim();
     }
-
-
-
-
-
-
 }

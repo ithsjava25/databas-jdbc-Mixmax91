@@ -1,0 +1,19 @@
+package com.example;
+
+public interface MenuMethods {
+    void printMenu();
+
+    int checkForInt();
+
+    void findAllMissions();
+
+    void findMissionByID();
+
+    void countMissionByYear();
+
+    void createAccount();
+
+    void updatePassword();
+
+    void deleteAccount();
+}

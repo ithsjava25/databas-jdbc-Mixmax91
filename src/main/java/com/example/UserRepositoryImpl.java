@@ -20,12 +20,9 @@ public class UserRepositoryImpl implements UserRepository {
             try(ResultSet rs = findUserStatement.executeQuery()) {
                 return rs.next();
             }
-
         } catch (SQLException e){
             throw new RuntimeException();
         }
-
-
     }
 
     @Override
