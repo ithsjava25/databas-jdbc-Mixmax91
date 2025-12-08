@@ -31,6 +31,7 @@ public class Main {
             throw new RuntimeException(e);
         }
         //Todo: Starting point for your code
+        System.out.println("Database connection established");
     }
 
     /**
