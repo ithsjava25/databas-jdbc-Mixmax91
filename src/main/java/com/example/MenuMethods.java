@@ -13,6 +13,8 @@ public interface MenuMethods {
 
     void createAccount();
 
+    String checkSsn();
+
     void updatePassword();
 
     void deleteAccount();

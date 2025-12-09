@@ -57,8 +57,34 @@ public class MenuMethodsImpl implements MenuMethods {
 
     @Override
     public void createAccount() {
-        System.out.println("Creates account");
+        String firstName = IO.readln("Enter first name: ");
+        String lastName = IO.readln("Enter last name: ");
+        String ssn = checkSsn();
+        String password = IO.readln("Enter password: ");
+        String userName = firstName.substring(0, 1).toUpperCase() +
+                firstName.substring(1, 3) +
+                lastName.substring(0, 1).toUpperCase() +
+                lastName.substring(1, 3);
+        //TODO: Check if already exists
+        if(!moonMissionRepo.createUser(firstName, lastName, ssn, password, userName)){
+            System.out.println("Something went wrong creating account.");
+        } else {
+            System.out.println("Account created successfully with username: " + userName);
+        }
     }
+
+    @Override
+    public String checkSsn() {
+        while (true) { System.out.println("Enter ssn: ");
+            String ssnInput = IO.readln();
+            if (ssnInput.matches("\\d{6}-\\d{4}")) {
+                return ssnInput;
+            } else {
+                System.out.println("Invalid SSN, use format: YYYYMMDD-NNNN");
+            }
+        }
+    }
+
 
     @Override
     public void updatePassword() {
