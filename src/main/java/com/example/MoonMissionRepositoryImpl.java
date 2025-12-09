@@ -74,7 +74,7 @@ public class MoonMissionRepositoryImpl implements MoonMissionRepository {
         int result = -1;
         String idQuery = "select user_id from account where name = ?";
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement idStmt = connection.prepareStatement(idQuery)) {
+            PreparedStatement idStmt = connection.prepareStatement(idQuery)) {
             idStmt.setString(1, name);
             ResultSet rs = idStmt.executeQuery();
             if(rs.next()){
@@ -84,6 +84,20 @@ public class MoonMissionRepositoryImpl implements MoonMissionRepository {
             }
         } catch (SQLException e) {
             throw new RuntimeException();
+        }
+    }
+
+    @Override
+    public boolean updatePassword(int id, String password) {
+        String updatePasswordQuery = "update account set password = ? where user_id = ?";
+        try(Connection connection = dataSource.getConnection();
+            PreparedStatement updatePasswordStmt = connection.prepareStatement(updatePasswordQuery)){
+            updatePasswordStmt.setString(1, password);
+            updatePasswordStmt.setInt(2, id);
+            updatePasswordStmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            return false;
         }
     }
 
@@ -100,6 +114,19 @@ public class MoonMissionRepositoryImpl implements MoonMissionRepository {
             createUserStmt.setString(5, ssn);
             createUserStmt.executeUpdate();
             return true;
+        } catch (SQLException e) {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean userIdExists(int idInput) {
+        String userIdExistsQuery = "select * from account where user_id = ?";
+        try(Connection connection = dataSource.getConnection();
+            PreparedStatement createUserStmt = connection.prepareStatement(userIdExistsQuery)) {
+            createUserStmt.setInt(1, idInput);
+            ResultSet rs = createUserStmt.executeQuery();
+            return rs.next();
         } catch (SQLException e) {
             return false;
         }

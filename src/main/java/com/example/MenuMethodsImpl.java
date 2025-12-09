@@ -80,7 +80,7 @@ public class MenuMethodsImpl implements MenuMethods {
             if (ssnInput.matches("\\d{6}-\\d{4}")) {
                 return ssnInput;
             } else {
-                System.out.println("Invalid SSN, use format: YYYYMMDD-NNNN");
+                System.out.println("Invalid SSN, use format: YYYYMMDD-NNNN.");
             }
         }
     }
@@ -88,7 +88,19 @@ public class MenuMethodsImpl implements MenuMethods {
 
     @Override
     public void updatePassword() {
-        System.out.println("Updates password");
+        System.out.println("Enter ID: ");
+        int idInput = checkForInt();
+        if(moonMissionRepo.userIdExists(idInput)) {
+            System.out.println("Enter new password: ");
+            String password = IO.readln();
+            if (!moonMissionRepo.updatePassword(idInput, password)) {
+                System.out.println("Password could not be updated");
+            } else {
+                System.out.println("Updated password successfully for ID: " + idInput);
+            }
+        } else {
+            System.out.println("ID doesn't exist");
+        }
     }
 
     @Override
