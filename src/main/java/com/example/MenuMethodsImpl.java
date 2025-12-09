@@ -10,10 +10,10 @@ public class MenuMethodsImpl implements MenuMethods {
     public void printMenu() {
         System.out.println(
                 """
-                        1) List moon missions (prints spacecraft names from `moon_mission`).
-                        2) Get a moon mission by mission_id (prints details for that mission).
-                        3) Count missions for a given year (prompts: year; prints the number of missions launched that year).
-                        4) Create an account (prompts: first name, last name, ssn, password; prints confirmation).
+                        1) List moon missions.
+                        2) Get a moon mission by ID.
+                        3) Count missions for a given year.
+                        4) Create an account.
                         5) Update an account password (prompts: user_id, new password; prints confirmation).
                         6) Delete an account (prompts: user_id; prints confirmation).
                         0) Exit.
@@ -69,7 +69,7 @@ public class MenuMethodsImpl implements MenuMethods {
         if(!moonMissionRepo.createUser(firstName, lastName, ssn, password, userName)){
             System.out.println("Something went wrong creating account.");
         } else {
-            System.out.println("Account created successfully with username: " + userName);
+            System.out.println("Account created successfully with username: " + userName + " and ID: " + moonMissionRepo.id(userName));
         }
     }
 

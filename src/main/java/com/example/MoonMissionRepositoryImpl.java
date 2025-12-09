@@ -70,6 +70,24 @@ public class MoonMissionRepositoryImpl implements MoonMissionRepository {
     }
 
     @Override
+    public int id(String name) {
+        int result = -1;
+        String idQuery = "select user_id from account where name = ?";
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement idStmt = connection.prepareStatement(idQuery)) {
+            idStmt.setString(1, name);
+            ResultSet rs = idStmt.executeQuery();
+            if(rs.next()){
+                return rs.getInt("user_id");
+            } else {
+                return result;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException();
+        }
+    }
+
+    @Override
     public boolean createUser(String firstName, String lastName, String ssn, String password, String userName) {
         String createUserQuery = "insert into account(name, password, first_name, last_name, ssn) values(?, ?, ?, ?, ?)";
         try(Connection connection = dataSource.getConnection();
