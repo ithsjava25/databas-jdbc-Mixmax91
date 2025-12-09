@@ -16,8 +16,8 @@ public class MenuMethodsImpl implements MenuMethods {
                         2) Get a moon mission by ID.
                         3) Count missions for a given year.
                         4) Create an account.
-                        5) Update an account password (prompts: user_id, new password; prints confirmation).
-                        6) Delete an account (prompts: user_id; prints confirmation).
+                        5) Update an account password.
+                        6) Delete an account.
                         0) Exit.
                 """);
     }
@@ -109,16 +109,17 @@ public class MenuMethodsImpl implements MenuMethods {
     public void deleteAccount() {
         System.out.println("Enter ID: ");
         int idInput = checkForInt();
-        if(userRepo.userIdExists(idInput)) {
-            System.out.println("Enter username: ");
-            String userName = IO.readln();
-            System.out.println("Enter password: ");
-            String password = IO.readln();
-            if(!userRepo.deleteAccount(idInput)) {
-                System.out.println("Something went wrong deleting account.");
-            } else {
-                System.out.println("Account deleted successfully for ID: " + idInput);
-            }
+//        if(userRepo.userIdExists(idInput)) { //For future, ask for username and password before deleting
+//            System.out.println("Enter username: ");
+//            String userName = IO.readln();
+//            System.out.println("Enter password: ");
+//            String password = IO.readln();
+//        }
+        if(!userRepo.deleteAccount(idInput)) {
+            System.out.println("Something went wrong deleting account.");
+        } else {
+            System.out.println("Account deleted successfully for ID: " + idInput);
         }
+
     }
 }
