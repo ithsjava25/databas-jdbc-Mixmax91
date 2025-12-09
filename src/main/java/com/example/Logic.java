@@ -35,7 +35,7 @@ public class Logic {
     }
 
     public static void menu() {
-        MenuMethods menu = new MenuMethodsImpl(moonMissionRepo);
+        MenuMethods menu = new MenuMethodsImpl(moonMissionRepo, userRepo);
         while(true) {
             menu.printMenu();
             int menuInput = menu.checkForInt();

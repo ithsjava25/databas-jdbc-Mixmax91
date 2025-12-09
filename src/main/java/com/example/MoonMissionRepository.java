@@ -7,12 +7,4 @@ public interface MoonMissionRepository {
 
     int missionCountByYear(int year);
 
-    int id(String name);
-
-    boolean updatePassword(int id, String password);
-
-    boolean createUser(String firstName, String lastName, String ssn, String password, String userName);
-
-    boolean userIdExists(int idInput);
-
 }

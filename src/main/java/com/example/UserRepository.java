@@ -2,7 +2,14 @@ package com.example;
 
 public interface UserRepository {
     boolean validateCredentials(String username, String password);
-    boolean createUser(String username, String password);
+    boolean createUser(String firstName, String lastName, String ssn, String password, String userName);
 
-    User findUser(String username, String password);
+    boolean userIdExists(int idInput);
+
+    boolean updatePassword(int idInput, String newPassword);
+
+    boolean deleteAccount(int idInput);
+
+    int id(String name);
 }
+

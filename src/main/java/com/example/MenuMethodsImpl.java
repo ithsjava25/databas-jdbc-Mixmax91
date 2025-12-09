@@ -2,9 +2,11 @@ package com.example;
 
 public class MenuMethodsImpl implements MenuMethods {
     MoonMissionRepository moonMissionRepo;
+    UserRepository userRepo;
 
-    MenuMethodsImpl(MoonMissionRepository moonMissionRepo) {
+    MenuMethodsImpl(MoonMissionRepository moonMissionRepo, UserRepository userRepo) {
         this.moonMissionRepo = moonMissionRepo;
+        this.userRepo = userRepo;
     }
     @Override
     public void printMenu() {
@@ -66,10 +68,10 @@ public class MenuMethodsImpl implements MenuMethods {
                 lastName.substring(0, 1).toUpperCase() +
                 lastName.substring(1, 3);
         //TODO: Check if already exists
-        if(!moonMissionRepo.createUser(firstName, lastName, ssn, password, userName)){
+        if(!userRepo.createUser(firstName, lastName, ssn, password, userName)){
             System.out.println("Something went wrong creating account.");
         } else {
-            System.out.println("Account created successfully with username: " + userName + " and ID: " + moonMissionRepo.id(userName));
+            System.out.println("Account created successfully with username: " + userName + " and ID: " + userRepo.id(userName));
         }
     }
 
@@ -90,10 +92,10 @@ public class MenuMethodsImpl implements MenuMethods {
     public void updatePassword() {
         System.out.println("Enter ID: ");
         int idInput = checkForInt();
-        if(moonMissionRepo.userIdExists(idInput)) {
+        if(userRepo.userIdExists(idInput)) {
             System.out.println("Enter new password: ");
             String password = IO.readln();
-            if (!moonMissionRepo.updatePassword(idInput, password)) {
+            if (!userRepo.updatePassword(idInput, password)) {
                 System.out.println("Password could not be updated");
             } else {
                 System.out.println("Updated password successfully for ID: " + idInput);
@@ -105,6 +107,18 @@ public class MenuMethodsImpl implements MenuMethods {
 
     @Override
     public void deleteAccount() {
-        System.out.println("Deletes account");
+        System.out.println("Enter ID: ");
+        int idInput = checkForInt();
+        if(userRepo.userIdExists(idInput)) {
+            System.out.println("Enter username: ");
+            String userName = IO.readln();
+            System.out.println("Enter password: ");
+            String password = IO.readln();
+            if(!userRepo.deleteAccount(idInput)) {
+                System.out.println("Something went wrong deleting account.");
+            } else {
+                System.out.println("Account deleted successfully for ID: " + idInput);
+            }
+        }
     }
 }
