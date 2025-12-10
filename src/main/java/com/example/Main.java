@@ -14,7 +14,7 @@ import java.util.Arrays;
 
 public class Main {
 
-    public final int MAX_ATTEMPTS = 5;
+    public static final int MAX_ATTEMPTS = 5;
 
     static void main(String[] args) {
         if (isDevMode(args)) {

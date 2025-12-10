@@ -27,6 +27,9 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public boolean createUser(String firstName, String lastName, String ssn, String password, String userName) {
+        if (firstName == null || lastName == null || ssn == null || password == null || userName == null) {
+            throw new IllegalArgumentException("All parameters must be non-null");
+            }
         String createUserQuery = "insert into account(name, password, first_name, last_name, ssn) values(?, ?, ?, ?, ?)";
         try(Connection connection = dataSource.getConnection();
             PreparedStatement createUserStmt = connection.prepareStatement(createUserQuery)) {
@@ -86,7 +89,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public int id(String name) {
+    public int findIdByUsername(String name) {
         String idQuery = "select user_id from account where name = ?";
 
         try (Connection connection = dataSource.getConnection();
@@ -107,7 +110,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public boolean getUsername(String name) {
+    public boolean usernameExists(String name) {
         String getUsernameQuery = "select name from account where name = ?";
         try (Connection connection = dataSource.getConnection();
              PreparedStatement idStmt = connection.prepareStatement(getUsernameQuery)) {

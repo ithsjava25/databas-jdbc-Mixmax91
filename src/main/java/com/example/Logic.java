@@ -4,7 +4,7 @@ import javax.sql.DataSource;
 
 public class Logic {
     private static UserRepository userRepo;
-    private static MoonMissionRepositoryImpl moonMissionRepo;
+    private static MoonMissionRepository moonMissionRepo;
 
     public static void initialize(DataSource dataSource) {
         userRepo = new UserRepositoryImpl(dataSource);

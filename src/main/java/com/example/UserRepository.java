@@ -10,9 +10,9 @@ public interface UserRepository {
 
     boolean deleteAccount(int idInput);
 
-    int id(String name);
+    int findIdByUsername(String name);
 
-    boolean getUsername(String name);
+    boolean usernameExists(String name);
 
 
 }

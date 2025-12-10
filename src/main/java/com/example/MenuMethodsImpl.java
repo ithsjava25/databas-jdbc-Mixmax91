@@ -82,14 +82,14 @@ public class MenuMethodsImpl implements MenuMethods {
                 lastNameFormatted.substring(0, 1).toUpperCase() +
                 lastNameFormatted.substring(1, 3);
 
-        if(userRepo.getUsername(userName)) {
+        if(userRepo.usernameExists(userName)) {
             userName = makeUniqueUsername(userName);
         }
 
         if(!userRepo.createUser(firstNameInput, lastNameInput, ssn, password, userName)){
             System.out.println("Something went wrong creating account.");
         } else {
-            System.out.println("Account created successfully with username: " + userName + " and ID: " + userRepo.id(userName));
+            System.out.println("Account created successfully with username: " + userName + " and ID: " + userRepo.findIdByUsername(userName));
         }
     }
 
@@ -98,7 +98,7 @@ public class MenuMethodsImpl implements MenuMethods {
         int counter = 1;
         String newUserName = userName;
 
-        while (userRepo.getUsername(newUserName)) {
+        while (userRepo.usernameExists(newUserName)) {
             newUserName = userName + counter;
             counter++;
         }
