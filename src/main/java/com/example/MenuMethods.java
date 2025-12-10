@@ -15,6 +15,8 @@ public interface MenuMethods {
 
     String checkSsn();
 
+    String formatStringForUsername(String name);
+
     void updatePassword();
 
     void deleteAccount();

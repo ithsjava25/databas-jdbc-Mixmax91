@@ -59,16 +59,26 @@ public class MenuMethodsImpl implements MenuMethods {
 
     @Override
     public void createAccount() {
-        String firstName = IO.readln("Enter first name: ");
-        String lastName = IO.readln("Enter last name: ");
+        String firstNameInput = IO.readln("Enter first name: ");
+        if(firstNameInput.isBlank()){
+            System.out.println("Cannot be blank");
+            return;
+        }
+        String firstNameFormatted = formatStringForUsername(firstNameInput);
+        String lastNameInput = IO.readln("Enter last name: ");
+        if(lastNameInput.isBlank()){
+            System.out.println("Cannot be blank");
+            return;
+        }
+        String lastNameFormatted = formatStringForUsername(firstNameInput);
         String ssn = checkSsn();
         String password = IO.readln("Enter password: ");
-        String userName = firstName.substring(0, 1).toUpperCase() +
-                firstName.substring(1, 3) +
-                lastName.substring(0, 1).toUpperCase() +
-                lastName.substring(1, 3);
+        String userName = firstNameFormatted.substring(0, 1).toUpperCase() +
+                firstNameFormatted.substring(1, 3) +
+                lastNameFormatted.substring(0, 1).toUpperCase() +
+                lastNameFormatted.substring(1, 3);
         //TODO: Check if already exists
-        if(!userRepo.createUser(firstName, lastName, ssn, password, userName)){
+        if(!userRepo.createUser(firstNameInput, lastNameInput, ssn, password, userName)){
             System.out.println("Something went wrong creating account.");
         } else {
             System.out.println("Account created successfully with username: " + userName + " and ID: " + userRepo.id(userName));
@@ -85,6 +95,17 @@ public class MenuMethodsImpl implements MenuMethods {
                 System.out.println("Invalid SSN, use format: YYYYMMDD-NNNN.");
             }
         }
+    }
+
+    @Override
+    public String formatStringForUsername(String name) {
+        StringBuilder tempName = new StringBuilder(name);
+        int counter = 1;
+        while (tempName.length() < 3) {
+            tempName.append(counter);
+            counter++;
+        }
+        return tempName.toString();
     }
 
 
