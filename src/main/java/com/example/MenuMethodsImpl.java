@@ -73,6 +73,10 @@ public class MenuMethodsImpl implements MenuMethods {
         String lastNameFormatted = formatStringForUsername(firstNameInput);
         String ssn = checkSsn();
         String password = IO.readln("Enter password: ");
+        if(password.isBlank()){
+            System.out.println("Cannot be blank");
+            return;
+        }
         String userName = firstNameFormatted.substring(0, 1).toUpperCase() +
                 firstNameFormatted.substring(1, 3) +
                 lastNameFormatted.substring(0, 1).toUpperCase() +
