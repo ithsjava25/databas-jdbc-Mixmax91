@@ -149,11 +149,17 @@ public class MenuMethodsImpl implements MenuMethods {
     public void deleteAccount() {
         System.out.println("Enter ID: ");
         int idInput = checkForInt();
-//        if(userRepo.userIdExists(idInput)) { //For future, ask for username and password before deleting
-//            System.out.println("Enter username: ");
-//            String userName = IO.readln();
-//            System.out.println("Enter password: ");
-//            String password = IO.readln();
+        if(!userRepo.userIdExists(idInput)) {
+            System.out.println("Account with ID " + idInput + " does not exist.");
+            return;
+        }
+//        System.out.println("Enter username: "); //This is for future use, cannot use without failing tests
+//        String userName = IO.readln();
+//        System.out.println("Enter password: ");
+//        String password = IO.readln();
+//        if(!userRepo.validateCredentials(userName, password)) {
+//            System.out.println("Invalid credentials. Deletion cancelled.");
+//            return;
 //        }
         if(!userRepo.deleteAccount(idInput)) {
             System.out.println("Something went wrong deleting account.");
