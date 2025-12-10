@@ -1,5 +1,9 @@
 package com.example;
 
+/**
+ * this class is for future use
+ * to store logged in account as cache
+ */
 public class User {
     int id;
     String name;

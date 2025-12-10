@@ -1,8 +1,6 @@
 package com.example;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.util.Scanner;
 
 public class Logic {
     private static UserRepository userRepo;

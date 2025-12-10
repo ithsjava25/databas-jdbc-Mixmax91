@@ -1,12 +1,6 @@
 package com.example;
 
-import javax.sql.DataSource;
-import javax.xml.crypto.Data;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.Arrays;
-import java.util.Scanner;
 
 /** Labb 3 ITHS 2025, JUV25D
  *
