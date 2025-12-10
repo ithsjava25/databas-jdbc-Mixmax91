@@ -27,7 +27,7 @@ public class MoonMissionRepositoryImpl implements MoonMissionRepository {
                 return result;
             }
         } catch (SQLException e) {
-            return false;
+            throw new RuntimeException(e);
         }
     }
 
@@ -47,7 +47,7 @@ public class MoonMissionRepositoryImpl implements MoonMissionRepository {
                 return result;
             }
         } catch (SQLException e) {
-            return false;
+            throw new RuntimeException(e);
         }
     }
 
@@ -65,7 +65,7 @@ public class MoonMissionRepositoryImpl implements MoonMissionRepository {
                 }
             }
         } catch (SQLException e) {
-            return 0;
+            throw new RuntimeException(e);
         }
     }
 

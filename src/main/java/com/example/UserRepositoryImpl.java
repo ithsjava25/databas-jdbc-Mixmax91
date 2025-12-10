@@ -39,20 +39,22 @@ public class UserRepositoryImpl implements UserRepository {
             createUserStmt.executeUpdate();
             return true;
         } catch (SQLException e) {
-            return false;
+            throw new RuntimeException(e);
         }
     }
 
     @Override
     public boolean userIdExists(int idInput) {
-        String userIdExistsQuery = "select * from account where user_id = ?";
-        try(Connection connection = dataSource.getConnection();
-            PreparedStatement checkUserIdStmt = connection.prepareStatement(userIdExistsQuery);
-            ResultSet rs = checkUserIdStmt.executeQuery()) {
-            checkUserIdStmt.setInt(1, idInput);
-            return rs.next();
+        String query = "select 1 from account where user_id = ?";
+
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, idInput);
+            try (ResultSet rs = stmt.executeQuery()) {
+                return rs.next();
+            }
         } catch (SQLException e) {
-            return false;
+            throw new RuntimeException(e);
         }
     }
 
@@ -66,7 +68,7 @@ public class UserRepositoryImpl implements UserRepository {
             updatePasswordStmt.executeUpdate();
             return true;
         } catch (SQLException e) {
-            return false;
+            throw new RuntimeException(e);
         }
     }
 
@@ -79,25 +81,28 @@ public class UserRepositoryImpl implements UserRepository {
             createUserStmt.executeUpdate();
             return true;
         } catch (SQLException e) {
-            return false;
+            throw new RuntimeException(e);
         }
     }
 
     @Override
     public int id(String name) {
-        int result = -1;
         String idQuery = "select user_id from account where name = ?";
+
         try (Connection connection = dataSource.getConnection();
              PreparedStatement idStmt = connection.prepareStatement(idQuery)) {
+
             idStmt.setString(1, name);
-            ResultSet rs = idStmt.executeQuery();
-            if(rs.next()){
-                return rs.getInt("user_id");
-            } else {
-                return result;
+            try (ResultSet rs = idStmt.executeQuery()) {
+
+                if (rs.next()) {
+                    return rs.getInt("user_id");
+                } else {
+                    return -1;
+                }
             }
         } catch (SQLException e) {
-            throw new RuntimeException();
+            throw new RuntimeException(e);
         }
     }
 
