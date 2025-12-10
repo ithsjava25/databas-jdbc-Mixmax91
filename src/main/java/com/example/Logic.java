@@ -3,15 +3,14 @@ package com.example;
 import javax.sql.DataSource;
 
 public class Logic {
-    private static UserRepository userRepo;
-    private static MoonMissionRepository moonMissionRepo;
+    private final UserRepository userRepo;
+    private final MoonMissionRepository moonMissionRepo;
 
-    public static void initialize(DataSource dataSource) {
-        userRepo = new UserRepositoryImpl(dataSource);
-        moonMissionRepo = new MoonMissionRepositoryImpl(dataSource);
+    public Logic(DataSource dataSource) {
+        this.userRepo = new UserRepositoryImpl(dataSource);
+        this.moonMissionRepo = new MoonMissionRepositoryImpl(dataSource);
     }
-
-    public static boolean login(int maxAttempts) {
+    public boolean login(int maxAttempts) {
         int attempts = 0;
         boolean loggedIn = false;
         while(attempts < maxAttempts && !loggedIn) {
@@ -32,7 +31,7 @@ public class Logic {
         return loggedIn;
     }
 
-    public static void menu() {
+    public void menu() {
         MenuMethods menu = new MenuMethodsImpl(moonMissionRepo, userRepo);
         while(true) {
             menu.printMenu();

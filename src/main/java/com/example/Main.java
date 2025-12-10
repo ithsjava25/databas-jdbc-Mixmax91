@@ -30,12 +30,12 @@ public class Main {
         String dbPass = resolveConfig("APP_DB_PASS", "APP_DB_PASS");
 
         SimpleDriverManagerDataSource dataSource = new SimpleDriverManagerDataSource(jdbcUrl, dbUser, dbPass);
+        Logic logic = new Logic(dataSource);
 
         //Todo: Starting point for your code
-        Logic.initialize(dataSource);
-        boolean loggedIn = Logic.login(MAX_ATTEMPTS);
+        boolean loggedIn = logic.login(MAX_ATTEMPTS);
         if (loggedIn) {
-            Logic.menu();
+            logic.menu();
         }
     }
 
