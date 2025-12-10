@@ -70,7 +70,7 @@ public class MenuMethodsImpl implements MenuMethods {
             System.out.println("Cannot be blank");
             return;
         }
-        String lastNameFormatted = formatStringForUsername(firstNameInput);
+        String lastNameFormatted = formatStringForUsername(lastNameInput);
         String ssn = checkSsn();
         String password = IO.readln("Enter password: ");
         if(password.isBlank()){
@@ -82,6 +82,10 @@ public class MenuMethodsImpl implements MenuMethods {
                 lastNameFormatted.substring(0, 1).toUpperCase() +
                 lastNameFormatted.substring(1, 3);
 
+        if(userRepo.getUsername(userName)) {
+            userName = makeUniqueUsername(userName);
+        }
+
         if(!userRepo.createUser(firstNameInput, lastNameInput, ssn, password, userName)){
             System.out.println("Something went wrong creating account.");
         } else {
@@ -90,9 +94,20 @@ public class MenuMethodsImpl implements MenuMethods {
     }
 
     @Override
+    public String makeUniqueUsername(String userName){
+        int counter = 1;
+        String newUserName = userName;
+
+        while (userRepo.getUsername(newUserName)) {
+            newUserName = userName + counter;
+            counter++;
+        }
+        return newUserName;
+    }
+    @Override
     public String checkSsn() {
-        while (true) { System.out.println("Enter ssn: ");
-            String ssnInput = IO.readln();
+        while (true) {
+            String ssnInput = IO.readln("Enter ssn: ");
             if (ssnInput.matches("\\d{6}-\\d{4}")) {
                 return ssnInput;
             } else {
@@ -107,9 +122,6 @@ public class MenuMethodsImpl implements MenuMethods {
         int counter = 1;
         while (tempName.length() < 3) {
             tempName.append(counter);
-            if(userRepo.getUsername(tempName.toString())) {
-                tempName.append(counter);
-            }
             counter++;
         }
         return tempName.toString();

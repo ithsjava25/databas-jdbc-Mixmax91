@@ -17,6 +17,8 @@ public interface MenuMethods {
 
     String formatStringForUsername(String name);
 
+    String makeUniqueUsername(String userName);
+
     void updatePassword();
 
     void deleteAccount();
