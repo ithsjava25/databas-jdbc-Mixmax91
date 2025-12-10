@@ -11,5 +11,7 @@ public interface UserRepository {
     boolean deleteAccount(int idInput);
 
     int id(String name);
+
+    boolean getUsername(String name);
 }
 

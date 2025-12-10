@@ -81,7 +81,7 @@ public class MenuMethodsImpl implements MenuMethods {
                 firstNameFormatted.substring(1, 3) +
                 lastNameFormatted.substring(0, 1).toUpperCase() +
                 lastNameFormatted.substring(1, 3);
-        //TODO: Check if already exists
+
         if(!userRepo.createUser(firstNameInput, lastNameInput, ssn, password, userName)){
             System.out.println("Something went wrong creating account.");
         } else {
@@ -96,7 +96,7 @@ public class MenuMethodsImpl implements MenuMethods {
             if (ssnInput.matches("\\d{6}-\\d{4}")) {
                 return ssnInput;
             } else {
-                System.out.println("Invalid SSN, use format: YYYYMMDD-NNNN.");
+                System.out.println("Invalid SSN, use format: YYMMDD-NNNN.");
             }
         }
     }
@@ -107,6 +107,9 @@ public class MenuMethodsImpl implements MenuMethods {
         int counter = 1;
         while (tempName.length() < 3) {
             tempName.append(counter);
+            if(userRepo.getUsername(tempName.toString())) {
+                tempName.append(counter);
+            }
             counter++;
         }
         return tempName.toString();

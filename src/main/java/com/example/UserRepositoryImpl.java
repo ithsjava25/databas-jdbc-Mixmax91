@@ -101,4 +101,21 @@ public class UserRepositoryImpl implements UserRepository {
         }
     }
 
+    @Override
+    public boolean getUsername(String name) {
+        String getUsernameQuery = "select name from account where name = ?";
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement idStmt = connection.prepareStatement(getUsernameQuery)) {
+            idStmt.setString(1, name);
+            ResultSet rs = idStmt.executeQuery();
+            if(rs.next()){
+                return true;
+            } else {
+                return false;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }
