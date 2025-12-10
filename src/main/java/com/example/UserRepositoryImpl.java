@@ -47,9 +47,9 @@ public class UserRepositoryImpl implements UserRepository {
     public boolean userIdExists(int idInput) {
         String userIdExistsQuery = "select * from account where user_id = ?";
         try(Connection connection = dataSource.getConnection();
-            PreparedStatement createUserStmt = connection.prepareStatement(userIdExistsQuery)) {
-            createUserStmt.setInt(1, idInput);
-            ResultSet rs = createUserStmt.executeQuery();
+            PreparedStatement checkUserIdStmt = connection.prepareStatement(userIdExistsQuery);
+            ResultSet rs = checkUserIdStmt.executeQuery()) {
+            checkUserIdStmt.setInt(1, idInput);
             return rs.next();
         } catch (SQLException e) {
             return false;
