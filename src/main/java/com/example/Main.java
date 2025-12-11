@@ -13,7 +13,6 @@ import java.util.Arrays;
  */
 
 public class Main {
-
     public static final int MAX_ATTEMPTS = 5;
 
     static void main(String[] args) {
@@ -28,6 +27,11 @@ public class Main {
         String jdbcUrl = resolveConfig("APP_JDBC_URL", "APP_JDBC_URL");
         String dbUser = resolveConfig("APP_DB_USER", "APP_DB_USER");
         String dbPass = resolveConfig("APP_DB_PASS", "APP_DB_PASS");
+        if (jdbcUrl == null || dbUser == null || dbPass == null) {
+            throw new IllegalStateException(
+                    "Missing DB configuration. Provide APP_JDBC_URL, APP_DB_USER, APP_DB_PASS " +
+                            "as system properties (-Dkey=value) or environment variables.");
+        }
 
         SimpleDriverManagerDataSource dataSource = new SimpleDriverManagerDataSource(jdbcUrl, dbUser, dbPass);
         Logic logic = new Logic(dataSource);

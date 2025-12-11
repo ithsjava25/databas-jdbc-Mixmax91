@@ -11,24 +11,31 @@ public class Logic {
         this.moonMissionRepo = new MoonMissionRepositoryImpl(dataSource);
     }
     public boolean login(int maxAttempts) {
-        int attempts = 0;
-        boolean loggedIn = false;
-        while(attempts < maxAttempts && !loggedIn) {
-            String username = IO.readln("Enter your username (or 0 to quit):");
-            if (username.equals("0")) {
-                System.out.println("Exiting program...");
-                return loggedIn;
+        try {
+            int attempts = 0;
+            boolean loggedIn = false;
+            while (attempts < maxAttempts && !loggedIn) {
+                String username = IO.readln("Enter your username (or 0 to quit):");
+                if ("0".equals(username)) {
+                    System.out.println("Exiting program...");
+                    return loggedIn;
+                }
+
+                String password = IO.readln("Enter your password:");
+
+                if (userRepo.validateCredentials(username, password)) {
+                    System.out.println("Welcome " + username);
+                    loggedIn = true;
+                } else {
+                    System.out.println("Invalid username or password. Enter 0 to exit");
+                }
+                attempts++;
             }
-            String password = IO.readln("Enter your password:");
-            if(userRepo.validateCredentials(username, password)) {
-                System.out.println("Welcome " + username);
-                loggedIn = true;
-            } else {
-                System.out.println("Invalid username or password. Enter 0 to exit");
-            }
-            attempts++;
+            return loggedIn;
+        } catch (NullPointerException e) {
+            System.out.println("Invalid username or password. Enter 0 to exit");
         }
-        return loggedIn;
+        return false;
     }
 
     public void menu() {
