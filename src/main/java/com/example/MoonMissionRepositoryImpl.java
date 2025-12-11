@@ -28,8 +28,8 @@ public class MoonMissionRepositoryImpl implements MoonMissionRepository {
     }
 
     /**
-     * Retrieves and prints the names of all spacecraft from the moon_mission table.
-     * @return true if atleast one mission is found. Returns false if no data mission found.
+     * Retrieves stores all from the moon_mission table in an arraylist.
+     * @return List of strings
      * @throws RuntimeException if a database access error occurs
      */
     @Override

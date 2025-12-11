@@ -52,7 +52,6 @@ public class UserRepositoryImpl implements UserRepository {
      * @param password the password for the account
      * @param userName the username for the account
      * @return true if successfully created account
-     * @throws RuntimeException if a database access error occurs
      * @throws IllegalArgumentException if any argument is null
      */
     @Override
@@ -103,7 +102,6 @@ public class UserRepositoryImpl implements UserRepository {
      * @param id used to match with database
      * @param password new password
      * @return true if successfully changed password
-     * @throws RuntimeException if a database access error occurs
      */
     @Override
     public boolean updatePassword(int id, String password) {
@@ -124,7 +122,6 @@ public class UserRepositoryImpl implements UserRepository {
      * Deletes an account based on id
      * @param idInput used to match with database
      * @return true if successfully deleted account
-     * @throws RuntimeException if a database access error occurs
      */
     @Override
     public boolean deleteAccount(int idInput) {
@@ -180,7 +177,7 @@ public class UserRepositoryImpl implements UserRepository {
              PreparedStatement idStmt = connection.prepareStatement(getUsernameQuery)) {
             idStmt.setString(1, name);
             try(ResultSet rs = idStmt.executeQuery()) {
-                return rs.next();
+            return rs.next();
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

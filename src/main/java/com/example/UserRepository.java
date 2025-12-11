@@ -1,5 +1,6 @@
 package com.example;
 
+
 /**
  * Defines the methods needed for requesting the correct
  * user data from database based on user integration with menu
