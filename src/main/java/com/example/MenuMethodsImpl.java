@@ -9,15 +9,15 @@ package com.example;
  */
 
 public class MenuMethodsImpl implements MenuMethods {
-    MoonMissionRepository moonMissionRepo;
-    UserRepository userRepo;
+    private final MoonMissionRepository moonMissionRepo;
+    private final UserRepository userRepo;
 
     /**
      * Initialises MoonMissionRepository and UserRepository
      * @param moonMissionRepo used to retrieve mission data
      * @param userRepo used to manage user accounts
      */
-    MenuMethodsImpl(MoonMissionRepository moonMissionRepo, UserRepository userRepo) {
+    public MenuMethodsImpl(MoonMissionRepository moonMissionRepo, UserRepository userRepo) {
         this.moonMissionRepo = moonMissionRepo;
         this.userRepo = userRepo;
     }
@@ -96,6 +96,7 @@ public class MenuMethodsImpl implements MenuMethods {
     public void createAccount() {
         //Prompts and validates user inputs
         String firstNameInput = IO.readln("Enter first name: ");
+        firstNameInput = firstNameInput.trim();
         if(firstNameInput.isBlank()){
             System.out.println("Cannot be blank");
             return;
@@ -104,6 +105,7 @@ public class MenuMethodsImpl implements MenuMethods {
         //I call for formatting method to add numbers at the end if name is less than 3 letters
         String firstNameFormatted = formatStringForUsername(firstNameInput);
         String lastNameInput = IO.readln("Enter last name: ");
+        lastNameInput = lastNameInput.trim();
         if(lastNameInput.isBlank()){
             System.out.println("Cannot be blank");
             return;
@@ -172,7 +174,7 @@ public class MenuMethodsImpl implements MenuMethods {
     }
 
     /**
-     * Formats a name to become atleast 6 letters by adding numbers at the end.
+     * Formats a name to become atleast 3 letters by adding numbers at the end.
      * @param name the user's name
      * @return atleast 3 letters name (numbers at end if needed)
      */

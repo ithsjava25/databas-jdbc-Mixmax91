@@ -30,12 +30,20 @@ public class Logic {
         boolean loggedIn = false;
         while (attempts < maxAttempts && !loggedIn) {
             String username = IO.readln("Enter your username (or 0 to quit):");
+            if(username.isBlank()){
+                System.out.println("Invalid username, cannot be blank.");
+                continue;
+            }
             if ("0".equals(username)) {
                 System.out.println("Exiting program...");
                 return loggedIn;
             }
 
             String password = IO.readln("Enter your password:");
+            if(password.isBlank()){
+                System.out.println("Invalid password, cannot be blank.");
+                continue;
+            }
 
             if (userRepo.validateCredentials(username, password)) {
                 System.out.println("Welcome " + username);

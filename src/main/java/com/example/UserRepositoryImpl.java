@@ -5,7 +5,6 @@ import java.sql.*;
 
 /**
  * Implementation for UserRepository interface
- *
  * Interacts with database to retrieve user data
  * Uses parameter datasource as connection
  * MySql queries is sent for each operation
@@ -144,7 +143,7 @@ public class UserRepositoryImpl implements UserRepository {
     /**
      * Searches database for user id based on their username
      * @param name username used to match with database
-     * @return user id if succesfull, -1 if no match found
+     * @return user id if successfull, -1 if no match found
      * @throws RuntimeException if a database access error occurs
      */
     @Override
@@ -180,11 +179,8 @@ public class UserRepositoryImpl implements UserRepository {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement idStmt = connection.prepareStatement(getUsernameQuery)) {
             idStmt.setString(1, name);
-            ResultSet rs = idStmt.executeQuery();
-            if(rs.next()){
-                return true;
-            } else {
-                return false;
+            try(ResultSet rs = idStmt.executeQuery()) {
+                return rs.next();
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
