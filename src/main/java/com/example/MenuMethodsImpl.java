@@ -202,6 +202,10 @@ public class MenuMethodsImpl implements MenuMethods {
         if(userRepo.userIdExists(idInput)) {
             System.out.println("Enter new password: ");
             String password = IO.readln();
+            if(password.isBlank()) {
+                System.out.println("Password cannot be blank");
+                return;
+            }
             if (!userRepo.updatePassword(idInput, password)) {
                 System.out.println("Password could not be updated");
             } else {

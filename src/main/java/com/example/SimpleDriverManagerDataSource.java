@@ -33,7 +33,7 @@ public class SimpleDriverManagerDataSource  implements DataSource {
 
     @Override
     public Connection getConnection(String username, String password) throws SQLException {
-        return DriverManager.getConnection(URL, USER, PASSWORD);
+        return DriverManager.getConnection(URL, username, password);
     }
 
     @Override

@@ -41,7 +41,7 @@ public class UserRepositoryImpl implements UserRepository {
                 return rs.next();
             }
         } catch (SQLException e){
-            throw new RuntimeException();
+            throw new RuntimeException(e);
         }
     }
 
@@ -73,7 +73,8 @@ public class UserRepositoryImpl implements UserRepository {
             createUserStmt.executeUpdate();
             return true;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            System.err.println("Failed to create user '" + userName + "': " + e.getMessage());
+            return false;
         }
     }
 
@@ -115,7 +116,8 @@ public class UserRepositoryImpl implements UserRepository {
             updatePasswordStmt.executeUpdate();
             return true;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            System.err.println("Failed to update password for user ID " + id + ": " + e.getMessage());
+            return false;
         }
     }
 
@@ -134,7 +136,8 @@ public class UserRepositoryImpl implements UserRepository {
             createUserStmt.executeUpdate();
             return true;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            System.err.println("Failed to delete account with ID " + idInput + ": " + e.getMessage());
+            return false;
         }
     }
 
