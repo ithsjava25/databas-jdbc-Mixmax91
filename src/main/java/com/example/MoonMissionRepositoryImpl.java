@@ -5,6 +5,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Implementation for MoonMissionRepository interface
@@ -31,17 +33,16 @@ public class MoonMissionRepositoryImpl implements MoonMissionRepository {
      * @throws RuntimeException if a database access error occurs
      */
     @Override
-    public boolean moonMissions() {
+    public List<String> moonMissions() {
         String moonMissionsQuery = "select spacecraft from moon_mission";
         try(Connection connection = dataSource.getConnection();
             PreparedStatement moonMissionsStmt = connection.prepareStatement(moonMissionsQuery)) {
-            boolean result = false;
+            List<String> results = new ArrayList<>();
             try(ResultSet rs = moonMissionsStmt.executeQuery()){
                 while(rs.next()){
-                    System.out.println(rs.getString("spacecraft"));
-                    result = true;
+                    results.add(rs.getString("spacecraft"));
                 }
-                return result;
+                return results;
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -55,19 +56,18 @@ public class MoonMissionRepositoryImpl implements MoonMissionRepository {
      * @throws RuntimeException if a database access error occurs
      */
     @Override
-    public boolean missionByID(int id) {
+    public String missionByID(int id) {
         String missionByIDQuery = "select spacecraft from moon_mission where mission_id = ?";
 
         try(Connection connection = dataSource.getConnection();
             PreparedStatement missionByIDStmt = connection.prepareStatement(missionByIDQuery)) {
             missionByIDStmt.setInt(1, id);
-            boolean result = false;
             try(ResultSet rs = missionByIDStmt.executeQuery()){
-                while(rs.next()){
-                    System.out.println(rs.getString("spacecraft"));
-                    result = true;
+                if(rs.next()){
+                    return rs.getString("spacecraft");
+                } else {
+                    return "";
                 }
-                return result;
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

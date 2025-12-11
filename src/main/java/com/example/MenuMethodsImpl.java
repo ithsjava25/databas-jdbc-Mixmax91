@@ -1,5 +1,7 @@
 package com.example;
 
+import java.util.List;
+
 /**
  * Implementation of the MenuMethods interface.
  * Provides methods for handling user menu operations,
@@ -60,8 +62,13 @@ public class MenuMethodsImpl implements MenuMethods {
      */
     @Override
     public void findAllMissions() {
-        if(!moonMissionRepo.moonMissions()){
-            System.out.println("No data found");
+        List<String> missions = moonMissionRepo.moonMissions();
+        if (missions.isEmpty()) {
+            System.out.println("No data found.");
+        } else {
+            for (String spacecraft : missions) {
+                System.out.println(spacecraft);
+            }
         }
     }
 
@@ -73,8 +80,11 @@ public class MenuMethodsImpl implements MenuMethods {
     public void findMissionByID() {
         System.out.println("Enter mission id: ");
         int idInput = checkForInt();
-        if(!moonMissionRepo.missionByID(idInput)) {
+        String mission = moonMissionRepo.missionByID(idInput);
+        if(mission.isEmpty()) {
             System.out.println("No data found");
+        } else {
+            System.out.println(mission);
         }
     }
 
