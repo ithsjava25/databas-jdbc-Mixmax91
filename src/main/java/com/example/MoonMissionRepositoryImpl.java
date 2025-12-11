@@ -6,13 +6,30 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * Implementation for MoonMissionRepository interface
+ *
+ * Interacts with database to retrieve mission data
+ * Uses parameter datasource as connection
+ * MySql queries is sent for each operation
+ */
+
 public class MoonMissionRepositoryImpl implements MoonMissionRepository {
     private final DataSource dataSource;
 
+    /**
+     * Stores datasource in an instance
+     * @param dataSource used to connect to database
+     */
     public MoonMissionRepositoryImpl(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
+    /**
+     * Retrieves and prints the names of all spacecraft from the moon_mission table.
+     * @return true if atleast one mission is found. Returns false if no data mission found.
+     * @throws RuntimeException if a database access error occurs
+     */
     @Override
     public boolean moonMissions() {
         String moonMissionsQuery = "select spacecraft from moon_mission";
@@ -31,6 +48,12 @@ public class MoonMissionRepositoryImpl implements MoonMissionRepository {
         }
     }
 
+    /**
+     *
+     * @param id used to search through mission_id for match
+     * @return returns name of mission from spacecraft if match with id is found
+     * @throws RuntimeException if a database access error occurs
+     */
     @Override
     public boolean missionByID(int id) {
         String missionByIDQuery = "select spacecraft from moon_mission where mission_id = ?";
@@ -51,6 +74,12 @@ public class MoonMissionRepositoryImpl implements MoonMissionRepository {
         }
     }
 
+    /**
+     *
+     * @param year used to search through launch_date for missions
+     * @return amount of missions for given year
+     * @throws RuntimeException if a database access error occurs
+     */
     @Override
     public int missionCountByYear(int year) {
         String missionCountByYearQuery = "select count(*) as amount_year from moon_mission where year(launch_date) = ?";

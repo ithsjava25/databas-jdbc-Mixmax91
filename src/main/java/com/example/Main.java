@@ -3,13 +3,24 @@ package com.example;
 import java.util.Arrays;
 
 /** Labb 3 ITHS 2025, JUV25D
+ * Notes:
+ * Program asks user for username and password.
+ * If login is successful a menu is presented.
+ *  1) List moon missions.
+ *  2) Get a moon mission by ID.
+ *  3) Count missions for a given year.
+ *  4) Create an account.
+ *  5) Update an account password.
+ *  6) Delete an account.
+ *  0) Exit.
+ *  Each option calls MenuMethodImpl who then connects to either
+ *  UserRepositoryImpl or MoonMissionRepositoryImpl.
+ *  A simple driver manager datasource is created in Main and is sent to MenuMethodsImpl
+ *  which then initializes UserRepositoryImpl or MoonMissionRepositoryImpl with the dataSource
+ *  Validation checks and exception handling is integrated and the three different interface classes
+ *  makes for easy testing.
  *
- * Prompt for Username: and then Password: on startup and validate them against the account table (name + password)
- * If the login is invalid, print a message containing the word invalid and allow exiting via option 0
- * If the login is valid, present a menu with options
- * Use the DB settings provided via APP_JDBC_URL, APP_DB_USER, APP_DB_PASS (already resolved in Main).
- *
- * @Author Daniel Marton
+ * @author Daniel Marton
  */
 
 public class Main {
@@ -33,11 +44,13 @@ public class Main {
                             "as system properties (-Dkey=value) or environment variables.");
         }
 
+        // The datasource is created once
         SimpleDriverManagerDataSource dataSource = new SimpleDriverManagerDataSource(jdbcUrl, dbUser, dbPass);
         Logic logic = new Logic(dataSource);
 
-        //Todo: Starting point for your code
+        //Calls login method for user login prompts and validation with a max attempts set
         boolean loggedIn = logic.login(MAX_ATTEMPTS);
+        //If loggedIn returns true the menu is presented.
         if (loggedIn) {
             logic.menu();
         }

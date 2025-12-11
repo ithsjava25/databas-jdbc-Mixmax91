@@ -3,13 +3,33 @@ package com.example;
 import javax.sql.DataSource;
 import java.sql.*;
 
+/**
+ * Implementation for UserRepository interface
+ *
+ * Interacts with database to retrieve user data
+ * Uses parameter datasource as connection
+ * MySql queries is sent for each operation
+ */
+
 public class UserRepositoryImpl implements UserRepository {
 
     private final DataSource dataSource;
+
+    /**
+     * Stores datasource in an instance
+     * @param dataSource used to connect to database
+     */
     public UserRepositoryImpl(DataSource dataSource) {
         this.dataSource = dataSource;
 
     }
+
+    /**
+     * @param username user entered username, is compared with database
+     * @param password user entered password. is compared with database
+     * @return true if username and password is found, returns false if not found
+     * @throws RuntimeException if a database access error occurs
+     */
     @Override
     public boolean validateCredentials(String username, String password) {
         String findUser = "select * from account where name = ? and password = ?";
@@ -25,6 +45,17 @@ public class UserRepositoryImpl implements UserRepository {
         }
     }
 
+    /**
+     *
+     * @param firstName users first name
+     * @param lastName users last name
+     * @param ssn users ssn 001122-3344 format
+     * @param password the password for the account
+     * @param userName the username for the account
+     * @return true if successfully created account
+     * @throws RuntimeException if a database access error occurs
+     * @throws IllegalArgumentException if any argument is null
+     */
     @Override
     public boolean createUser(String firstName, String lastName, String ssn, String password, String userName) {
         if (firstName == null || lastName == null || ssn == null || password == null || userName == null) {
@@ -46,6 +77,12 @@ public class UserRepositoryImpl implements UserRepository {
         }
     }
 
+    /**
+     * Checks if user id exists in database
+     * @param idInput used to match with database
+     * @return true if found, returns false if not found
+     * @throws RuntimeException if a database access error occurs
+     */
     @Override
     public boolean userIdExists(int idInput) {
         String query = "select 1 from account where user_id = ?";
@@ -61,6 +98,13 @@ public class UserRepositoryImpl implements UserRepository {
         }
     }
 
+    /**
+     * Changes an accounts password based in id
+     * @param id used to match with database
+     * @param password new password
+     * @return true if successfully changed password
+     * @throws RuntimeException if a database access error occurs
+     */
     @Override
     public boolean updatePassword(int id, String password) {
         String updatePasswordQuery = "update account set password = ? where user_id = ?";
@@ -75,6 +119,12 @@ public class UserRepositoryImpl implements UserRepository {
         }
     }
 
+    /**
+     * Deletes an account based on id
+     * @param idInput used to match with database
+     * @return true if successfully deleted account
+     * @throws RuntimeException if a database access error occurs
+     */
     @Override
     public boolean deleteAccount(int idInput) {
         String deleteAccountQuery = "delete from account where user_id = ?";
@@ -88,6 +138,12 @@ public class UserRepositoryImpl implements UserRepository {
         }
     }
 
+    /**
+     * Searches database for user id based on their username
+     * @param name username used to match with database
+     * @return user id if succesfull, -1 if no match found
+     * @throws RuntimeException if a database access error occurs
+     */
     @Override
     public int findIdByUsername(String name) {
         String idQuery = "select user_id from account where name = ?";
@@ -109,6 +165,12 @@ public class UserRepositoryImpl implements UserRepository {
         }
     }
 
+    /**
+     * Searches database for username
+     * @param name username used to match with database
+     * @return true if found, false if not found
+     * @throws RuntimeException if a database access error occurs
+     */
     @Override
     public boolean usernameExists(String name) {
         String getUsernameQuery = "select name from account where name = ?";

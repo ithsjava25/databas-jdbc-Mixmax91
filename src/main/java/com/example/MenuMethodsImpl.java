@@ -1,13 +1,30 @@
 package com.example;
 
+/**
+ * Implementation of the MenuMethods interface.
+ * Provides methods for handling user menu operations,
+ * including displaying mission data and performing user account management.
+ * It interacts with MoonMissionRepository and UserRepository
+ * to perform data operations.
+ */
+
 public class MenuMethodsImpl implements MenuMethods {
     MoonMissionRepository moonMissionRepo;
     UserRepository userRepo;
 
+    /**
+     * Initialises MoonMissionRepository and UserRepository
+     * @param moonMissionRepo used to retrieve mission data
+     * @param userRepo used to manage user accounts
+     */
     MenuMethodsImpl(MoonMissionRepository moonMissionRepo, UserRepository userRepo) {
         this.moonMissionRepo = moonMissionRepo;
         this.userRepo = userRepo;
     }
+
+    /**
+     * Prints the main menu to the user interface.
+     */
     @Override
     public void printMenu() {
         System.out.println(
@@ -22,6 +39,10 @@ public class MenuMethodsImpl implements MenuMethods {
                 """);
     }
 
+    /**
+     * Captures the user input and validates that the value entered is an integer.
+     * @return a valid integer entered by the user
+     */
     @Override
     public int checkForInt() {
         while (true) {
@@ -34,6 +55,9 @@ public class MenuMethodsImpl implements MenuMethods {
         }
     }
 
+    /**
+     * Retrieves and displays all missions available in the system.
+     */
     @Override
     public void findAllMissions() {
         if(!moonMissionRepo.moonMissions()){
@@ -41,6 +65,10 @@ public class MenuMethodsImpl implements MenuMethods {
         }
     }
 
+    /**
+     * Prompts the user for a mission ID and displays the matching mission,
+     * if one exists.
+     */
     @Override
     public void findMissionByID() {
         System.out.println("Enter mission id: ");
@@ -50,6 +78,9 @@ public class MenuMethodsImpl implements MenuMethods {
         }
     }
 
+    /**
+     * Counts and displays the number of missions associated with a given year.
+     */
     @Override
     public void countMissionByYear() {
         System.out.println("Enter mission year: ");
@@ -57,13 +88,20 @@ public class MenuMethodsImpl implements MenuMethods {
         System.out.println("Missions for " + yearInput + " : " + moonMissionRepo.missionCountByYear(yearInput));
     }
 
+    /**
+     * Creates a new account by gathering user information,
+     * validating input fields, and storing the account.
+     */
     @Override
     public void createAccount() {
+        //Prompts and validates user inputs
         String firstNameInput = IO.readln("Enter first name: ");
         if(firstNameInput.isBlank()){
             System.out.println("Cannot be blank");
             return;
         }
+        //Since username is to be 3 letters from first name and 3 letters from lastname,
+        //I call for formatting method to add numbers at the end if name is less than 3 letters
         String firstNameFormatted = formatStringForUsername(firstNameInput);
         String lastNameInput = IO.readln("Enter last name: ");
         if(lastNameInput.isBlank()){
@@ -77,15 +115,19 @@ public class MenuMethodsImpl implements MenuMethods {
             System.out.println("Cannot be blank");
             return;
         }
+
+        //Creates the username by taking the first 3 letters of first name and last name
         String userName = firstNameFormatted.substring(0, 1).toUpperCase() +
                 firstNameFormatted.substring(1, 3) +
                 lastNameFormatted.substring(0, 1).toUpperCase() +
                 lastNameFormatted.substring(1, 3);
 
+        //Checks if username already exists, if so change it to become unique
         if(userRepo.usernameExists(userName)) {
             userName = makeUniqueUsername(userName);
         }
 
+        //Creates the account
         if(!userRepo.createUser(firstNameInput, lastNameInput, ssn, password, userName)){
             System.out.println("Something went wrong creating account.");
         } else {
@@ -93,22 +135,35 @@ public class MenuMethodsImpl implements MenuMethods {
         }
     }
 
+    /**
+     * Ensures a username is unique by checking existing accounts
+     * and adjusting the value if needed.
+     * @param userName the initial username to validate
+     * @return a unique username
+     */
     @Override
     public String makeUniqueUsername(String userName){
         int counter = 1;
         String newUserName = userName;
 
+        //Adds numbers at the end if username exists
+        //Try adding 1, then 2, then 3 etc...
         while (userRepo.usernameExists(newUserName)) {
             newUserName = userName + counter;
             counter++;
         }
         return newUserName;
     }
+
+    /**
+     * Prompts the user for a Social Security Number (SSN) and validates the format.
+     * @return a validated SSN string
+     */
     @Override
     public String checkSsn() {
         while (true) {
             String ssnInput = IO.readln("Enter ssn: ");
-            if (ssnInput.matches("\\d{6}-\\d{4}")) {
+            if (ssnInput.matches("\\d{6}-\\d{4}")) { //Asking for YYMMDD-NNNN format
                 return ssnInput;
             } else {
                 System.out.println("Invalid SSN, use format: YYMMDD-NNNN.");
@@ -116,10 +171,16 @@ public class MenuMethodsImpl implements MenuMethods {
         }
     }
 
+    /**
+     * Formats a name to become atleast 6 letters by adding numbers at the end.
+     * @param name the user's name
+     * @return atleast 3 letters name (numbers at end if needed)
+     */
     @Override
     public String formatStringForUsername(String name) {
         StringBuilder tempName = new StringBuilder(name);
         int counter = 1;
+        //Adds numbers at the end while name length is less than 3
         while (tempName.length() < 3) {
             tempName.append(counter);
             counter++;
@@ -128,10 +189,16 @@ public class MenuMethodsImpl implements MenuMethods {
     }
 
 
+
+    /**
+     * Allows the user to update the password on an existing account,
+     */
     @Override
     public void updatePassword() {
         System.out.println("Enter ID: ");
         int idInput = checkForInt();
+
+        //checks if userId exists first
         if(userRepo.userIdExists(idInput)) {
             System.out.println("Enter new password: ");
             String password = IO.readln();
@@ -145,6 +212,12 @@ public class MenuMethodsImpl implements MenuMethods {
         }
     }
 
+    /**
+     * Deletes an existing user account.
+     * Prompts user for ID that is matched
+     * with user_id to select which account
+     * to delete.
+     */
     @Override
     public void deleteAccount() {
         System.out.println("Enter ID: ");
@@ -153,7 +226,8 @@ public class MenuMethodsImpl implements MenuMethods {
             System.out.println("Account with ID " + idInput + " does not exist.");
             return;
         }
-//        System.out.println("Enter username: "); //This is for future use, cannot use without failing tests
+//        This is for future use, cannot use without failing tests:
+//        System.out.println("Enter username: ");
 //        String userName = IO.readln();
 //        System.out.println("Enter password: ");
 //        String password = IO.readln();

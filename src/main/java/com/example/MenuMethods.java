@@ -1,6 +1,11 @@
 package com.example;
 
+/**
+ * Defines the operations available for menu-driven user interactions,
+ * including mission lookups and account management.
+ */
 public interface MenuMethods {
+
     void printMenu();
 
     int checkForInt();

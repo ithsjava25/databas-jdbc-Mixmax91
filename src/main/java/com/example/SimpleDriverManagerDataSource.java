@@ -5,6 +5,11 @@ import java.io.PrintWriter;
 import java.sql.*;
 import java.util.logging.Logger;
 
+/**
+ * Creates and returns driver manager connection as datasource for
+ * connecting with database.
+ */
+
 public class SimpleDriverManagerDataSource  implements DataSource {
     private final String URL;
     private final String USER;

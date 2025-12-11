@@ -2,14 +2,29 @@ package com.example;
 
 import javax.sql.DataSource;
 
+/**
+ * Handles user inputs that calls for the correct data from repositories within menu method
+ * It handles login validation
+ * It initializes both repositories with datasource
+ */
 public class Logic {
     private final UserRepository userRepo;
     private final MoonMissionRepository moonMissionRepo;
 
+    /**
+     *
+     * @param dataSource SimpleDriverManager for initializing repositories
+     */
     public Logic(DataSource dataSource) {
         this.userRepo = new UserRepositoryImpl(dataSource);
         this.moonMissionRepo = new MoonMissionRepositoryImpl(dataSource);
     }
+
+    /**
+     *
+     * @param maxAttempts max amount of attempts before method returns false, tracked with counter
+     * @return Returns true if login is successful. Returns false if max attempts are hit or 0 is entered
+     */
     public boolean login(int maxAttempts) {
         try {
             int attempts = 0;
@@ -38,6 +53,13 @@ public class Logic {
         return false;
     }
 
+
+    /**
+     * Presents a menu for user with 7 options.
+     * If 0 is entered, returns to main.
+     * 1-6 calls instance methods of MenuMethodsImpl
+     * Loops until 0 is entered
+     */
     public void menu() {
         MenuMethods menu = new MenuMethodsImpl(moonMissionRepo, userRepo);
         while(true) {
