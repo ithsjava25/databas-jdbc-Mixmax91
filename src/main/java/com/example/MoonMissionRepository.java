@@ -5,10 +5,27 @@ package com.example;
  * mission data from database based on user integration with menu
  */
 public interface MoonMissionRepository {
-    boolean moonMissions();
+    /**
+ * Indicates whether moon mission records are available in the repository.
+ *
+ * @return true if moon missions data is present, false otherwise.
+ */
+boolean moonMissions();
 
-    boolean missionByID(int id);
+    /**
+ * Checks whether a mission with the given identifier exists.
+ *
+ * @param id the mission identifier to look up
+ * @return `true` if a mission with the given identifier exists, `false` otherwise
+ */
+boolean missionByID(int id);
 
-    int missionCountByYear(int year);
+    /**
+ * Counts the moon missions that occurred in the specified year.
+ *
+ * @param year the calendar year to query for missions
+ * @return the number of missions that took place in the given year
+ */
+int missionCountByYear(int year);
 
 }

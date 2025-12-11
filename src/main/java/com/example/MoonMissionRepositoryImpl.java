@@ -18,17 +18,17 @@ public class MoonMissionRepositoryImpl implements MoonMissionRepository {
     private final DataSource dataSource;
 
     /**
-     * Stores datasource in an instance
-     * @param dataSource used to connect to database
+     * Creates a MoonMissionRepositoryImpl that uses the provided DataSource to access the database.
      */
     public MoonMissionRepositoryImpl(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
     /**
-     * Retrieves and prints the names of all spacecraft from the moon_mission table.
-     * @return true if atleast one mission is found. Returns false if no data mission found.
-     * @throws RuntimeException if a database access error occurs
+     * Retrieve and print the spacecraft names stored in the moon_mission table.
+     *
+     * @return `true` if at least one mission is found, `false` otherwise.
+     * @throws RuntimeException if a database access error occurs while querying the table.
      */
     @Override
     public boolean moonMissions() {
@@ -49,9 +49,10 @@ public class MoonMissionRepositoryImpl implements MoonMissionRepository {
     }
 
     /**
+     * Finds and prints spacecraft name(s) for the specified mission id.
      *
-     * @param id used to search through mission_id for match
-     * @return returns name of mission from spacecraft if match with id is found
+     * @param id the mission_id to look up
+     * @return `true` if a mission with the given id was found and its spacecraft name(s) printed, `false` otherwise
      * @throws RuntimeException if a database access error occurs
      */
     @Override
@@ -75,9 +76,10 @@ public class MoonMissionRepositoryImpl implements MoonMissionRepository {
     }
 
     /**
+     * Retrieve the number of moon missions launched in a given year.
      *
-     * @param year used to search through launch_date for missions
-     * @return amount of missions for given year
+     * @param year the year to match against the launch_date year (e.g., 1969)
+     * @return the count of missions launched in the specified year; 0 if none
      * @throws RuntimeException if a database access error occurs
      */
     @Override

@@ -13,9 +13,10 @@ public class MenuMethodsImpl implements MenuMethods {
     UserRepository userRepo;
 
     /**
-     * Initialises MoonMissionRepository and UserRepository
-     * @param moonMissionRepo used to retrieve mission data
-     * @param userRepo used to manage user accounts
+     * Creates a MenuMethodsImpl instance backed by the provided repositories.
+     *
+     * @param moonMissionRepo repository for retrieving moon mission data
+     * @param userRepo repository for managing user accounts
      */
     MenuMethodsImpl(MoonMissionRepository moonMissionRepo, UserRepository userRepo) {
         this.moonMissionRepo = moonMissionRepo;
@@ -40,8 +41,9 @@ public class MenuMethodsImpl implements MenuMethods {
     }
 
     /**
-     * Captures the user input and validates that the value entered is an integer.
-     * @return a valid integer entered by the user
+     * Reads user input repeatedly until a valid integer is entered.
+     *
+     * @return the integer value entered by the user
      */
     @Override
     public int checkForInt() {
@@ -56,7 +58,9 @@ public class MenuMethodsImpl implements MenuMethods {
     }
 
     /**
-     * Retrieves and displays all missions available in the system.
+     * Displays all missions available in the system to standard output.
+     *
+     * If no missions are available, prints "No data found".
      */
     @Override
     public void findAllMissions() {
@@ -79,7 +83,7 @@ public class MenuMethodsImpl implements MenuMethods {
     }
 
     /**
-     * Counts and displays the number of missions associated with a given year.
+     * Prompts the user for a mission year and prints the number of missions for that year.
      */
     @Override
     public void countMissionByYear() {
@@ -89,8 +93,9 @@ public class MenuMethodsImpl implements MenuMethods {
     }
 
     /**
-     * Creates a new account by gathering user information,
-     * validating input fields, and storing the account.
+     * Creates a new user account by prompting for and validating user details, ensuring a unique username, and persisting the account.
+     *
+     * <p>The method prompts for first name, last name, SSN, and password; rejects blank names or passwords; formats names for username creation; makes the username unique if necessary; attempts to create the user in the repository; and prints a success message with the created username and user ID or an error message on failure.</p>
      */
     @Override
     public void createAccount() {
@@ -156,8 +161,9 @@ public class MenuMethodsImpl implements MenuMethods {
     }
 
     /**
-     * Prompts the user for a Social Security Number (SSN) and validates the format.
-     * @return a validated SSN string
+     * Prompt for and return an SSN in the form YYMMDD-NNNN, re-prompting until the input matches that pattern.
+     *
+     * @return SSN string in the form YYMMDD-NNNN
      */
     @Override
     public String checkSsn() {
@@ -172,10 +178,11 @@ public class MenuMethodsImpl implements MenuMethods {
     }
 
     /**
-     * Formats a name to become atleast 6 letters by adding numbers at the end.
-     * @param name the user's name
-     * @return atleast 3 letters name (numbers at end if needed)
-     */
+         * Ensure a name has at least three characters by appending numeric digits to its end.
+         *
+         * @param name the input name to format; if its length is already three or more it is returned unchanged
+         * @return the formatted name with length >= 3, with digits appended starting from 1 when padding is needed
+         */
     @Override
     public String formatStringForUsername(String name) {
         StringBuilder tempName = new StringBuilder(name);
@@ -191,7 +198,11 @@ public class MenuMethodsImpl implements MenuMethods {
 
 
     /**
-     * Allows the user to update the password on an existing account,
+     * Update the password for an existing user account by ID.
+     *
+     * Prompts for an account ID and, if the account exists, prompts for a new password
+     * and attempts to update it in the user repository. Prints messages indicating
+     * whether the ID was found and whether the password update succeeded.
      */
     @Override
     public void updatePassword() {
@@ -213,10 +224,9 @@ public class MenuMethodsImpl implements MenuMethods {
     }
 
     /**
-     * Deletes an existing user account.
-     * Prompts user for ID that is matched
-     * with user_id to select which account
-     * to delete.
+     * Delete a user account identified by its numeric ID.
+     *
+     * Prompts for an ID, verifies the account exists, attempts to delete it, and reports the outcome via console messages.
      */
     @Override
     public void deleteAccount() {

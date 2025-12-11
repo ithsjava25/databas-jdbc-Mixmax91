@@ -12,8 +12,9 @@ public class Logic {
     private final MoonMissionRepository moonMissionRepo;
 
     /**
+     * Constructs a Logic instance and initializes user and moon mission repositories using the provided DataSource.
      *
-     * @param dataSource SimpleDriverManager for initializing repositories
+     * @param dataSource the DataSource used to initialize repository implementations (provides database connections)
      */
     public Logic(DataSource dataSource) {
         this.userRepo = new UserRepositoryImpl(dataSource);
@@ -21,9 +22,10 @@ public class Logic {
     }
 
     /**
+     * Prompt the user to authenticate, allowing up to a specified number of attempts.
      *
-     * @param maxAttempts max amount of attempts before method returns false, tracked with counter
-     * @return Returns true if login is successful. Returns false if max attempts are hit or 0 is entered
+     * @param maxAttempts the maximum number of credential attempts before the method stops prompting
+     * @return `true` if the credentials are validated and the user is logged in; `false` otherwise (including when the user enters "0" to exit or when the maximum attempts are reached)
      */
     public boolean login(int maxAttempts) {
         try {
@@ -55,11 +57,18 @@ public class Logic {
 
 
     /**
-     * Presents a menu for user with 7 options.
-     * If 0 is entered, returns to main.
-     * 1-6 calls instance methods of MenuMethodsImpl
-     * Loops until 0 is entered
-     */
+         * Display a repeating text menu, handle user selections, and perform the chosen action until the user exits.
+         *
+         * Reads integer selections from the user and dispatches actions accordingly:
+         * 0 — exit the menu and return;
+         * 1 — list all missions;
+         * 2 — find a mission by ID;
+         * 3 — count missions by year;
+         * 4 — create a user account;
+         * 5 — update a user's password;
+         * 6 — delete a user account.
+         * Invalid inputs prompt the user to enter a valid option.
+         */
     public void menu() {
         MenuMethods menu = new MenuMethodsImpl(moonMissionRepo, userRepo);
         while(true) {
