@@ -110,8 +110,8 @@ public class UserRepositoryImpl implements UserRepository {
             PreparedStatement updatePasswordStmt = connection.prepareStatement(updatePasswordQuery)){
             updatePasswordStmt.setString(1, password);
             updatePasswordStmt.setInt(2, id);
-            updatePasswordStmt.executeUpdate();
-            return true;
+            int rowsUpdated = updatePasswordStmt.executeUpdate();
+            return rowsUpdated > 0;
         } catch (SQLException e) {
             System.err.println("Failed to update password for user ID " + id + ": " + e.getMessage());
             return false;
@@ -129,8 +129,8 @@ public class UserRepositoryImpl implements UserRepository {
         try(Connection connection = dataSource.getConnection();
             PreparedStatement createUserStmt = connection.prepareStatement(deleteAccountQuery)) {
             createUserStmt.setInt(1, idInput);
-            createUserStmt.executeUpdate();
-            return true;
+            int rowsUpdated = createUserStmt.executeUpdate();
+            return rowsUpdated > 0;
         } catch (SQLException e) {
             System.err.println("Failed to delete account with ID " + idInput + ": " + e.getMessage());
             return false;

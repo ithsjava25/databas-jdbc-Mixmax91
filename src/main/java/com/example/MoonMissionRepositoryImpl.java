@@ -29,7 +29,7 @@ public class MoonMissionRepositoryImpl implements MoonMissionRepository {
 
     /**
      * Retrieves stores all from the moon_mission table in an arraylist.
-     * @return List of strings
+     * @return List of strings. Returns empty list when no data is found
      * @throws RuntimeException if a database access error occurs
      */
     @Override
