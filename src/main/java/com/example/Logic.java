@@ -16,8 +16,12 @@ public class Logic {
      *
      * @param scanner instance of scanner
      * @param menu instance of MenuMethods
+     * @throws IllegalArgumentException if arguments are null
      */
     public Logic(Scanner scanner, MenuMethods menu) {
+        if (scanner == null || menu == null) {
+            throw new IllegalArgumentException("Scanner and MenuMethods must not be null");
+        }
         this.scanner = scanner;
         this.menu = menu;
     }
@@ -81,7 +85,7 @@ public class Logic {
                 case 5 -> menu.updatePassword();
                 case 6 -> menu.deleteAccount();
                 default -> System.out.println("Invalid input.\nPlease enter a number between 1 and 6 or 0 to exit: ");
-                }
             }
         }
+    }
 }
