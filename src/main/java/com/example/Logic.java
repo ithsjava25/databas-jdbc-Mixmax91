@@ -34,14 +34,18 @@ public class Logic {
      *
      * @param maxAttempts maximum number of credential attempts allowed before the method returns false
      * @return `true` if credentials are validated within the allowed attempts, `false` if attempts are exhausted or the user exited with "0"
+     * @throws IllegalArgumentException if max attempts <= 0
      */
     public boolean login(int maxAttempts) {
+        if(maxAttempts <= 0) {
+            throw new IllegalArgumentException("Max attempts must be greater than 0");
+        }
         int attempts = 0;
         boolean loggedIn = false;
 
         while (attempts < maxAttempts && !loggedIn) {
             System.out.println("Enter your username (or 0 to quit):");
-            String username = scanner.nextLine();
+            String username = scanner.nextLine().trim();
             if(username.isBlank()){
                 System.out.println("Invalid username, cannot be blank.");
                 continue;

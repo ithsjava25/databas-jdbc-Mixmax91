@@ -27,7 +27,7 @@ public class MenuMethodsImpl implements MenuMethods {
      */
     public MenuMethodsImpl(MoonMissionRepository moonMissionRepo, UserRepository userRepo, Scanner scanner) {
         if(moonMissionRepo == null || userRepo == null || scanner == null) {
-            throw new IllegalArgumentException("DataSource must not be null");
+            throw new IllegalArgumentException("MoonMissionRepository, UserRepository and Scanner must not be null");
         }
         this.moonMissionRepo = moonMissionRepo;
         this.userRepo = userRepo;
@@ -111,7 +111,7 @@ public class MenuMethodsImpl implements MenuMethods {
         System.out.println("Enter mission id: ");
         int idInput = checkForInt();
         String mission = moonMissionRepo.missionByID(idInput);
-        if(mission.isEmpty()) {
+        if(mission == null || mission.isEmpty()) {
             System.out.println("No data found");
         } else {
             System.out.println(mission);
