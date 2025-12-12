@@ -1,6 +1,5 @@
 package com.example;
 
-import javax.sql.DataSource;
 import java.util.Scanner;
 
 /**
@@ -73,15 +72,15 @@ public class Logic {
         while(true) {
             menu.printMenu();
             int menuInput = menu.checkForInt();
-                switch (menuInput) {
-                    case 0 -> {System.out.println("Exiting program..."); return;}
-                    case 1 -> menu.findAllMissions();
-                    case 2 -> menu.findMissionByID();
-                    case 3 -> menu.countMissionByYear();
-                    case 4 -> menu.createAccount();
-                    case 5 -> menu.updatePassword();
-                    case 6 -> menu.deleteAccount();
-                    default -> System.out.println("Invalid input.\nPlease enter a number between 1 and 6 or 0 to exit: ");
+            switch (menuInput) {
+                case 0 -> {System.out.println("Exiting program..."); return;}
+                case 1 -> menu.findAllMissions();
+                case 2 -> menu.findMissionByID();
+                case 3 -> menu.countMissionByYear();
+                case 4 -> menu.createAccount();
+                case 5 -> menu.updatePassword();
+                case 6 -> menu.deleteAccount();
+                default -> System.out.println("Invalid input.\nPlease enter a number between 1 and 6 or 0 to exit: ");
                 }
             }
         }

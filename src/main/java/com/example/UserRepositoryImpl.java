@@ -131,9 +131,9 @@ public class UserRepositoryImpl implements UserRepository {
     public boolean deleteAccount(int idInput) {
         String deleteAccountQuery = "delete from account where user_id = ?";
         try(Connection connection = dataSource.getConnection();
-            PreparedStatement createUserStmt = connection.prepareStatement(deleteAccountQuery)) {
-            createUserStmt.setInt(1, idInput);
-            int rowsUpdated = createUserStmt.executeUpdate();
+            PreparedStatement deleteAccountStmt = connection.prepareStatement(deleteAccountQuery)) {
+            deleteAccountStmt.setInt(1, idInput);
+            int rowsUpdated = deleteAccountStmt.executeUpdate();
             return rowsUpdated > 0;
         } catch (SQLException e) {
             System.err.println("Failed to delete account with ID " + idInput + ": " + e.getMessage());
