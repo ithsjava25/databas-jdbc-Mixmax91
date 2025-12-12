@@ -69,7 +69,6 @@ public class Logic {
         return loggedIn;
     }
 
-
     /**
      * Display a 7-option interactive menu and dispatch selected actions until the user exits.
      *
