@@ -15,9 +15,10 @@ public class UserRepositoryImpl implements UserRepository {
     private final DataSource dataSource;
 
     /**
-     * Stores datasource in an instance
-     * @param dataSource used to connect to database
-     * @throws IllegalArgumentException if datasource is null
+     * Create a UserRepositoryImpl that uses the provided DataSource for obtaining database connections.
+     *
+     * @param dataSource the DataSource used to obtain database connections
+     * @throws IllegalArgumentException if dataSource is null
      */
     public UserRepositoryImpl(DataSource dataSource) {
         if(dataSource == null) {
@@ -28,9 +29,11 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     /**
-     * @param username user entered username, is compared with database
-     * @param password user entered password. is compared with database
-     * @return true if username and password is found, returns false if not found
+     * Checks whether an account exists with the given username and password.
+     *
+     * @param username the account username to check
+     * @param password the account password to check
+     * @return true if an account with the supplied username and password exists, false otherwise
      * @throws RuntimeException if a database access error occurs
      */
     @Override
@@ -49,13 +52,14 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     /**
+     * Creates a new user account with the provided name, SSN, and credentials.
      *
-     * @param firstName users first name
-     * @param lastName users last name
-     * @param ssn users ssn 001122-3344 format
+     * @param firstName the user's first name
+     * @param lastName the user's last name
+     * @param ssn the user's social security number in the format "001122-3344"
      * @param password the password for the account
      * @param userName the username for the account
-     * @return true if successfully created account
+     * @return `true` if the account was created successfully, `false` otherwise
      * @throws IllegalArgumentException if any argument is null
      */
     @Override
@@ -81,9 +85,10 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     /**
-     * Checks if user id exists in database
-     * @param idInput used to match with database
-     * @return true if found, returns false if not found
+     * Determine whether a user with the given user_id exists in the database.
+     *
+     * @param idInput the user_id to check for existence
+     * @return {@code true} if a row with the given user_id exists, {@code false} otherwise
      * @throws RuntimeException if a database access error occurs
      */
     @Override
@@ -102,10 +107,11 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     /**
-     * Changes an accounts password based in id
-     * @param id used to match with database
-     * @param password new password
-     * @return true if successfully changed password
+     * Update the account password for the specified user ID.
+     *
+     * @param id the user_id of the account to update
+     * @param password the new password to set for the account
+     * @return true if the password was updated for at least one row, false otherwise
      */
     @Override
     public boolean updatePassword(int id, String password) {
@@ -123,9 +129,10 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     /**
-     * Deletes an account based on id
-     * @param idInput used to match with database
-     * @return true if successfully deleted account
+     * Delete the account with the specified user_id.
+     *
+     * @param idInput the user_id of the account to delete
+     * @return `true` if an account with the given id was deleted, `false` otherwise
      */
     @Override
     public boolean deleteAccount(int idInput) {
@@ -142,9 +149,10 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     /**
-     * Searches database for user id based on their username
-     * @param name username used to match with database
-     * @return user id if successfull, -1 if no match found
+     * Finds the numeric user_id for the given username.
+     *
+     * @param name the username to look up
+     * @return the user's user_id if a match is found, -1 if no matching user exists
      * @throws RuntimeException if a database access error occurs
      */
     @Override
@@ -169,9 +177,10 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     /**
-     * Searches database for username
-     * @param name username used to match with database
-     * @return true if found, false if not found
+     * Checks whether a username exists in the account table.
+     *
+     * @param name the username to look up
+     * @return `true` if a row with the given username exists, `false` otherwise
      * @throws RuntimeException if a database access error occurs
      */
     @Override

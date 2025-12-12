@@ -27,6 +27,15 @@ import java.util.Scanner;
 public class Main {
     public static final int MAX_ATTEMPTS = 5;
 
+    /**
+     * Application entry point that optionally initializes a development database and then starts the application run sequence.
+     *
+     * <p>If development mode is detected (via the `--dev` command-line flag, the `devMode` system property, or the
+     * `DEV_MODE` environment variable), the development database initializer will be started before the application runs.</p>
+     *
+     * @param args command-line arguments; supports `--dev` to enable development mode (the `devMode` system property
+     *             and `DEV_MODE` environment variable are also recognized)
+     */
     static void main(String[] args) {
         if (isDevMode(args)) {
             DevDatabaseInitializer.start();
@@ -34,6 +43,16 @@ public class Main {
         new Main().run();
     }
 
+    /**
+     * Start the application's runtime: resolve database configuration, initialize the data source
+     * and repositories, then perform user login and show the interactive menu on success.
+     *
+     * <p>Resolves JDBC connection settings from system properties or environment variables,
+     * constructs the shared data source and repository implementations, and drives the
+     * login → menu flow.</p>
+     *
+     * @throws IllegalStateException if any of APP_JDBC_URL, APP_DB_USER or APP_DB_PASS are not provided
+     */
     public void run() {
         // Resolve DB settings with precedence: System properties -> Environment variables
         String jdbcUrl = resolveConfig("APP_JDBC_URL", "APP_JDBC_URL");
