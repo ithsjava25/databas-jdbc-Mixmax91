@@ -20,9 +20,10 @@ public class MoonMissionRepositoryImpl implements MoonMissionRepository {
     private final DataSource dataSource;
 
     /**
-     * Stores datasource in an instance
-     * @param dataSource used to connect to database
-     * @throws IllegalArgumentException if datasource is null
+     * Create a MoonMissionRepositoryImpl using the provided DataSource.
+     *
+     * @param dataSource the DataSource used to obtain database connections
+     * @throws IllegalArgumentException if {@code dataSource} is null
      */
     public MoonMissionRepositoryImpl(DataSource dataSource) {
         if(dataSource == null) {
@@ -32,8 +33,9 @@ public class MoonMissionRepositoryImpl implements MoonMissionRepository {
     }
 
     /**
-     * Retrieves all from the moon_mission table in an arraylist.
-     * @return List of strings. Returns empty list when no data is found
+     * Retrieve spacecraft names from the moon_mission table.
+     *
+     * @return a list of spacecraft names; empty if no rows are found
      * @throws RuntimeException if a database access error occurs
      */
     @Override
@@ -54,8 +56,10 @@ public class MoonMissionRepositoryImpl implements MoonMissionRepository {
     }
 
     /**
-     * @param id used to search through mission_id for match
-     * @return returns name of mission from spacecraft if match with id is found
+     * Retrieve the spacecraft name for the mission with the given database id.
+     *
+     * @param id the mission_id to look up
+     * @return the spacecraft name if a mission with the given id exists, otherwise an empty string
      * @throws RuntimeException if a database access error occurs
      */
     @Override
@@ -78,8 +82,10 @@ public class MoonMissionRepositoryImpl implements MoonMissionRepository {
     }
 
     /**
-     * @param year used to search through launch_date for missions
-     * @return amount of missions for given year
+     * Count missions launched in the specified year.
+     *
+     * @param year the year to match against the missions' launch_date
+     * @return the number of missions launched in that year
      * @throws RuntimeException if a database access error occurs
      */
     @Override

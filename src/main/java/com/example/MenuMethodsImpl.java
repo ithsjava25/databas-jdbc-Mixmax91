@@ -18,10 +18,12 @@ public class MenuMethodsImpl implements MenuMethods {
     private final Scanner scanner;
 
     /**
-     * Initialises MoonMissionRepository and UserRepository
-     * @param moonMissionRepo used to retrieve mission data
-     * @param userRepo used to manage user accounts
-     * @throws IllegalArgumentException if any of the arguments are null
+     * Creates a MenuMethodsImpl using the provided moon mission repository, user repository, and input scanner.
+     *
+     * @param moonMissionRepo repository used to retrieve mission data
+     * @param userRepo repository used to manage user accounts
+     * @param scanner input scanner for reading user input
+     * @throws IllegalArgumentException if any argument is null
      */
     public MenuMethodsImpl(MoonMissionRepository moonMissionRepo, UserRepository userRepo, Scanner scanner) {
         if(moonMissionRepo == null || userRepo == null || scanner == null) {
@@ -49,6 +51,11 @@ public class MenuMethodsImpl implements MenuMethods {
                 """);
     }
 
+    /**
+     * Validate user credentials.
+     *
+     * @return `true` if the provided username and password match a known user, `false` otherwise.
+     */
     @Override
     public boolean validateCredentials(String username, String password) {
         return userRepo.validateCredentials(username, password);
@@ -56,9 +63,12 @@ public class MenuMethodsImpl implements MenuMethods {
 
 
     /**
-     * Captures the user input and validates that the value entered is an integer.
-     * @return a valid integer entered by the user
-     */
+         * Reads lines from the configured Scanner until a valid integer is entered or the input stream is closed.
+         *
+         * If a line cannot be parsed as an integer, a prompt is printed and the method continues reading.
+         *
+         * @return the parsed integer from user input; returns 0 if the input stream is closed (Scanner.nextLine() throws NoSuchElementException)
+         */
     @Override
     public int checkForInt() {
         while (true) {
@@ -171,10 +181,10 @@ public class MenuMethodsImpl implements MenuMethods {
     }
 
     /**
-     * Ensures a username is unique by checking existing accounts
-     * and adjusting the value if needed.
-     * @param userName the initial username to validate
-     * @return a unique username
+     * Produce a username that does not collide with existing accounts.
+     *
+     * @param userName the preferred username
+     * @return the original username if available; otherwise the username with a numeric suffix that is not already used
      */
     @Override
     public String makeUniqueUsername(String userName){
@@ -191,8 +201,9 @@ public class MenuMethodsImpl implements MenuMethods {
     }
 
     /**
-     * Prompts the user for a Social Security Number (SSN) and validates the format.
-     * @return a validated SSN string
+     * Reads a Social Security Number from user input and validates it matches the format YYMMDD-NNNN.
+     *
+     * @return the entered SSN in the format YYMMDD-NNNN
      */
     @Override
     public String checkSsn() {
@@ -208,9 +219,10 @@ public class MenuMethodsImpl implements MenuMethods {
     }
 
     /**
-     * Formats a name to become atleast 3 letters by adding numbers at the end.
-     * @param name the user's name
-     * @return atleast 3 letters name (numbers at end if needed)
+     * Ensure a name is at least three characters by appending incremental digits.
+     *
+     * @param name the original name to format; may be shorter than three characters
+     * @return the name padded with incremental digits starting at 1 until its length is at least three
      */
     @Override
     public String formatStringForUsername(String name) {
@@ -227,7 +239,10 @@ public class MenuMethodsImpl implements MenuMethods {
 
 
     /**
-     * Allows the user to update the password on an existing account,
+     * Update the password for an existing user account identified by ID.
+     *
+     * Prompts for an account ID, verifies the account exists, prompts for a new non-blank password,
+     * attempts to update the password via the user repository, and prints success or failure messages.
      */
     @Override
     public void updatePassword() {
@@ -253,10 +268,10 @@ public class MenuMethodsImpl implements MenuMethods {
     }
 
     /**
-     * Deletes an existing user account.
-     * Prompts user for ID that is matched
-     * with user_id to select which account
-     * to delete.
+     * Prompts for a user ID and deletes the corresponding account if it exists.
+     *
+     * If the provided ID does not match an existing account, a message is printed and no action is taken.
+     * On deletion failure or success a corresponding message is printed to standard output.
      */
     @Override
     public void deleteAccount() {

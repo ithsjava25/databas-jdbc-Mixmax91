@@ -13,10 +13,11 @@ public class Logic {
     private final MenuMethods menu;
 
     /**
+     * Constructs a Logic instance that uses the given Scanner and MenuMethods.
      *
-     * @param scanner instance of scanner
-     * @param menu instance of MenuMethods
-     * @throws IllegalArgumentException if arguments are null
+     * @param scanner the Scanner used to read user input
+     * @param menu the MenuMethods instance used to present menus and validate credentials
+     * @throws IllegalArgumentException if either {@code scanner} or {@code menu} is null
      */
     public Logic(Scanner scanner, MenuMethods menu) {
         if (scanner == null || menu == null) {
@@ -27,9 +28,12 @@ public class Logic {
     }
 
     /**
+     * Performs an interactive login flow allowing a limited number of attempts.
      *
-     * @param maxAttempts max amount of attempts before method returns false, tracked with counter
-     * @return Returns true if login is successful. Returns false if max attempts are hit or 0 is entered
+     * Prompts for username and password up to the specified maximum; entering "0" as the username exits immediately.
+     *
+     * @param maxAttempts maximum number of credential attempts allowed before the method returns false
+     * @return `true` if credentials are validated within the allowed attempts, `false` if attempts are exhausted or the user exited with "0"
      */
     public boolean login(int maxAttempts) {
         int attempts = 0;
@@ -67,10 +71,9 @@ public class Logic {
 
 
     /**
-     * Presents a menu for user with 7 options.
-     * If 0 is entered, returns to main.
-     * 1-6 calls instance methods of MenuMethodsImpl
-     * Loops until 0 is entered
+     * Display a 7-option interactive menu and dispatch selected actions until the user exits.
+     *
+     * Repeatedly shows the menu, reads a numeric choice, invokes the corresponding MenuMethods operation for choices 1–6, prints an error for invalid input, and returns when 0 is entered.
      */
     public void menu() {
         while(true) {
