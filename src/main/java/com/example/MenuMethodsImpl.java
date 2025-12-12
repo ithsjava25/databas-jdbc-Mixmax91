@@ -1,6 +1,7 @@
 package com.example;
 
 import java.util.List;
+import java.util.Scanner;
 
 /**
  * Implementation of the MenuMethods interface.
@@ -13,15 +14,17 @@ import java.util.List;
 public class MenuMethodsImpl implements MenuMethods {
     private final MoonMissionRepository moonMissionRepo;
     private final UserRepository userRepo;
+    private final Scanner scanner;
 
     /**
      * Initialises MoonMissionRepository and UserRepository
      * @param moonMissionRepo used to retrieve mission data
      * @param userRepo used to manage user accounts
      */
-    public MenuMethodsImpl(MoonMissionRepository moonMissionRepo, UserRepository userRepo) {
+    public MenuMethodsImpl(MoonMissionRepository moonMissionRepo, UserRepository userRepo, Scanner scanner) {
         this.moonMissionRepo = moonMissionRepo;
         this.userRepo = userRepo;
+        this.scanner = scanner;
     }
 
     /**
@@ -48,7 +51,7 @@ public class MenuMethodsImpl implements MenuMethods {
     @Override
     public int checkForInt() {
         while (true) {
-            String userInput = IO.readln();
+            String userInput = scanner.nextLine();
             try {
                 return Integer.parseInt(userInput);
             } catch (NumberFormatException e) {
@@ -105,8 +108,8 @@ public class MenuMethodsImpl implements MenuMethods {
     @Override
     public void createAccount() {
         //Prompts and validates user inputs
-        String firstNameInput = IO.readln("Enter first name: ");
-        firstNameInput = firstNameInput.trim();
+        System.out.println("Enter first name: ");
+        String firstNameInput = scanner.nextLine().trim();
         if(firstNameInput.isBlank()){
             System.out.println("Cannot be blank");
             return;
@@ -114,7 +117,8 @@ public class MenuMethodsImpl implements MenuMethods {
         //Since username is to be 3 letters from first name and 3 letters from lastname,
         //I call for formatting method to add numbers at the end if name is less than 3 letters
         String firstNameFormatted = formatStringForUsername(firstNameInput);
-        String lastNameInput = IO.readln("Enter last name: ");
+        System.out.println("Enter last name: ");
+        String lastNameInput = scanner.nextLine().trim();
         lastNameInput = lastNameInput.trim();
         if(lastNameInput.isBlank()){
             System.out.println("Cannot be blank");
@@ -122,7 +126,9 @@ public class MenuMethodsImpl implements MenuMethods {
         }
         String lastNameFormatted = formatStringForUsername(lastNameInput);
         String ssn = checkSsn();
-        String password = IO.readln("Enter password: ");
+
+        System.out.println("Enter password: ");
+        String password = scanner.nextLine();
         if(password.isBlank()){
             System.out.println("Cannot be blank");
             return;
@@ -174,7 +180,8 @@ public class MenuMethodsImpl implements MenuMethods {
     @Override
     public String checkSsn() {
         while (true) {
-            String ssnInput = IO.readln("Enter ssn: ");
+            System.out.println("Enter ssn: ");
+            String ssnInput = scanner.nextLine().trim();
             if (ssnInput.matches("\\d{6}-\\d{4}")) { //Asking for YYMMDD-NNNN format
                 return ssnInput;
             } else {
@@ -213,7 +220,7 @@ public class MenuMethodsImpl implements MenuMethods {
         //checks if userId exists first
         if(userRepo.userIdExists(idInput)) {
             System.out.println("Enter new password: ");
-            String password = IO.readln();
+            String password = scanner.nextLine();
             if(password.isBlank()) {
                 System.out.println("Password cannot be blank");
                 return;

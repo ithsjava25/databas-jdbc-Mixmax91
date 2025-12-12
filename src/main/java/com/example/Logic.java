@@ -1,6 +1,7 @@
 package com.example;
 
 import javax.sql.DataSource;
+import java.util.Scanner;
 
 /**
  * Handles user inputs that calls for the correct data from repositories within menu method
@@ -10,6 +11,7 @@ import javax.sql.DataSource;
 public class Logic {
     private final UserRepository userRepo;
     private final MoonMissionRepository moonMissionRepo;
+    private final Scanner scanner;
 
     /**
      *
@@ -18,6 +20,7 @@ public class Logic {
     public Logic(DataSource dataSource) {
         this.userRepo = new UserRepositoryImpl(dataSource);
         this.moonMissionRepo = new MoonMissionRepositoryImpl(dataSource);
+        this.scanner = new Scanner(System.in);
     }
 
     /**
@@ -28,18 +31,21 @@ public class Logic {
     public boolean login(int maxAttempts) {
         int attempts = 0;
         boolean loggedIn = false;
+
         while (attempts < maxAttempts && !loggedIn) {
-            String username = IO.readln("Enter your username (or 0 to quit):");
+            System.out.println("Enter your username (or 0 to quit):");
+            String username = scanner.nextLine();
             if(username.isBlank()){
                 System.out.println("Invalid username, cannot be blank.");
                 continue;
             }
             if ("0".equals(username)) {
-                System.out.println("Exiting program...");
                 return loggedIn;
             }
 
-            String password = IO.readln("Enter your password:");
+            System.out.println("Enter your password: ");
+            String password = scanner.nextLine();
+
             if(password.isBlank()){
                 System.out.println("Invalid password, cannot be blank.");
                 continue;
@@ -64,7 +70,7 @@ public class Logic {
      * Loops until 0 is entered
      */
     public void menu() {
-        MenuMethods menu = new MenuMethodsImpl(moonMissionRepo, userRepo);
+        MenuMethods menu = new MenuMethodsImpl(moonMissionRepo, userRepo, scanner);
         while(true) {
             menu.printMenu();
             int menuInput = menu.checkForInt();
