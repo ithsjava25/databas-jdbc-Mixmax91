@@ -1,12 +1,41 @@
 package com.example;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.Arrays;
+import java.util.Scanner;
+
+/** Labb 3 ITHS 2025, JUV25D
+ * Notes:
+ * Program asks user for username and password.
+ * If login is successful a menu is presented.
+ *  1) List moon missions.
+ *  2) Get a moon mission by ID.
+ *  3) Count missions for a given year.
+ *  4) Create an account.
+ *  5) Update an account password.
+ *  6) Delete an account.
+ *  0) Exit.
+ *  Each option calls MenuMethodImpl who then connects to either
+ *  UserRepositoryImpl or MoonMissionRepositoryImpl.
+ *  A simple driver manager datasource is created in Main and is sent to MenuMethodsImpl
+ *  which then initializes UserRepositoryImpl or MoonMissionRepositoryImpl with the dataSource
+ *  Validation checks and exception handling is integrated and the three different interface classes
+ *  makes for easy testing.
+ *
+ * @author Daniel Marton
+ */
 
 public class Main {
+    public static final int MAX_ATTEMPTS = 5;
 
+    /**
+     * Application entry point that optionally initializes a development database and then starts the application run sequence.
+     *
+     * <p>If development mode is detected (via the `--dev` command-line flag, the `devMode` system property, or the
+     * `DEV_MODE` environment variable), the development database initializer will be started before the application runs.</p>
+     *
+     * @param args command-line arguments; supports `--dev` to enable development mode (the `devMode` system property
+     *             and `DEV_MODE` environment variable are also recognized)
+     */
     static void main(String[] args) {
         if (isDevMode(args)) {
             DevDatabaseInitializer.start();
@@ -14,23 +43,43 @@ public class Main {
         new Main().run();
     }
 
+    /**
+     * Start the application's runtime: resolve database configuration, initialize the data source
+     * and repositories, then perform user login and show the interactive menu on success.
+     *
+     * <p>Resolves JDBC connection settings from system properties or environment variables,
+     * constructs the shared data source and repository implementations, and drives the
+     * login → menu flow.</p>
+     *
+     * @throws IllegalStateException if any of APP_JDBC_URL, APP_DB_USER or APP_DB_PASS are not provided
+     */
     public void run() {
         // Resolve DB settings with precedence: System properties -> Environment variables
         String jdbcUrl = resolveConfig("APP_JDBC_URL", "APP_JDBC_URL");
         String dbUser = resolveConfig("APP_DB_USER", "APP_DB_USER");
         String dbPass = resolveConfig("APP_DB_PASS", "APP_DB_PASS");
-
         if (jdbcUrl == null || dbUser == null || dbPass == null) {
             throw new IllegalStateException(
                     "Missing DB configuration. Provide APP_JDBC_URL, APP_DB_USER, APP_DB_PASS " +
                             "as system properties (-Dkey=value) or environment variables.");
         }
 
-        try (Connection connection = DriverManager.getConnection(jdbcUrl, dbUser, dbPass)) {
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+
+        // The datasource is created once
+        SimpleDriverManagerDataSource dataSource = new SimpleDriverManagerDataSource(jdbcUrl, dbUser, dbPass);
+
+        UserRepository userRepo = new UserRepositoryImpl(dataSource);
+        MoonMissionRepository moonMissionRepo = new MoonMissionRepositoryImpl(dataSource);
+        Scanner scanner = new Scanner(System.in);
+        MenuMethods menu = new MenuMethodsImpl(moonMissionRepo, userRepo, scanner);
+        Logic logic = new Logic(scanner, menu);
+
+        //Calls login method for user login prompts and validation with a max attempts set
+        boolean loggedIn = logic.login(MAX_ATTEMPTS);
+        //If loggedIn returns true the menu is presented.
+        if (loggedIn) {
+            logic.menu();
         }
-        //Todo: Starting point for your code
     }
 
     /**
