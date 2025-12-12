@@ -1,6 +1,7 @@
 package com.example;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 /**
@@ -20,8 +21,12 @@ public class MenuMethodsImpl implements MenuMethods {
      * Initialises MoonMissionRepository and UserRepository
      * @param moonMissionRepo used to retrieve mission data
      * @param userRepo used to manage user accounts
+     * @throws IllegalArgumentException if any of the arguments are null
      */
     public MenuMethodsImpl(MoonMissionRepository moonMissionRepo, UserRepository userRepo, Scanner scanner) {
+        if(moonMissionRepo == null || userRepo == null || scanner == null) {
+            throw new IllegalArgumentException("DataSource must not be null");
+        }
         this.moonMissionRepo = moonMissionRepo;
         this.userRepo = userRepo;
         this.scanner = scanner;
@@ -44,6 +49,12 @@ public class MenuMethodsImpl implements MenuMethods {
                 """);
     }
 
+    @Override
+    public boolean validateCredentials(String username, String password) {
+        return userRepo.validateCredentials(username, password);
+    }
+
+
     /**
      * Captures the user input and validates that the value entered is an integer.
      * @return a valid integer entered by the user
@@ -51,7 +62,13 @@ public class MenuMethodsImpl implements MenuMethods {
     @Override
     public int checkForInt() {
         while (true) {
-            String userInput = scanner.nextLine();
+            final String userInput;
+            try{
+                userInput = scanner.nextLine().trim();
+            } catch(NoSuchElementException e){
+                return 0;
+            }
+
             try {
                 return Integer.parseInt(userInput);
             } catch (NumberFormatException e) {

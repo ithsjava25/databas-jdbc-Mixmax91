@@ -6,21 +6,21 @@ import java.util.Scanner;
 /**
  * Handles user inputs that calls for the correct data from repositories within menu method
  * It handles login validation
- * It initializes both repositories with datasource
+ * Is injected with UserRepository, MoonMissionRepository and a scanner
  */
 public class Logic {
-    private final UserRepository userRepo;
-    private final MoonMissionRepository moonMissionRepo;
+
     private final Scanner scanner;
+    private final MenuMethods menu;
 
     /**
      *
-     * @param dataSource SimpleDriverManager for initializing repositories
+     * @param scanner instance of scanner
+     * @param menu instance of MenuMethods
      */
-    public Logic(DataSource dataSource) {
-        this.userRepo = new UserRepositoryImpl(dataSource);
-        this.moonMissionRepo = new MoonMissionRepositoryImpl(dataSource);
-        this.scanner = new Scanner(System.in);
+    public Logic(Scanner scanner, MenuMethods menu) {
+        this.scanner = scanner;
+        this.menu = menu;
     }
 
     /**
@@ -51,7 +51,7 @@ public class Logic {
                 continue;
             }
 
-            if (userRepo.validateCredentials(username, password)) {
+            if (menu.validateCredentials(username, password)) {
                 System.out.println("Welcome " + username);
                 loggedIn = true;
             } else {
@@ -70,7 +70,6 @@ public class Logic {
      * Loops until 0 is entered
      */
     public void menu() {
-        MenuMethods menu = new MenuMethodsImpl(moonMissionRepo, userRepo, scanner);
         while(true) {
             menu.printMenu();
             int menuInput = menu.checkForInt();

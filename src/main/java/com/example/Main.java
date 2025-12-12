@@ -1,6 +1,7 @@
 package com.example;
 
 import java.util.Arrays;
+import java.util.Scanner;
 
 /** Labb 3 ITHS 2025, JUV25D
  * Notes:
@@ -44,9 +45,15 @@ public class Main {
                             "as system properties (-Dkey=value) or environment variables.");
         }
 
+
         // The datasource is created once
         SimpleDriverManagerDataSource dataSource = new SimpleDriverManagerDataSource(jdbcUrl, dbUser, dbPass);
-        Logic logic = new Logic(dataSource);
+
+        UserRepository userRepo = new UserRepositoryImpl(dataSource);
+        MoonMissionRepository moonMissionRepo = new MoonMissionRepositoryImpl(dataSource);
+        Scanner scanner = new Scanner(System.in);
+        MenuMethods menu = new MenuMethodsImpl(moonMissionRepo, userRepo, scanner);
+        Logic logic = new Logic(scanner, menu);
 
         //Calls login method for user login prompts and validation with a max attempts set
         boolean loggedIn = logic.login(MAX_ATTEMPTS);

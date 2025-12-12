@@ -17,8 +17,12 @@ public class UserRepositoryImpl implements UserRepository {
     /**
      * Stores datasource in an instance
      * @param dataSource used to connect to database
+     * @throws IllegalArgumentException if datasource is null
      */
     public UserRepositoryImpl(DataSource dataSource) {
+        if(dataSource == null) {
+            throw new IllegalArgumentException("DataSource must not be null");
+        }
         this.dataSource = dataSource;
 
     }
@@ -32,8 +36,8 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public boolean validateCredentials(String username, String password) {
         String findUser = "select * from account where name = ? and password = ?";
-        try(Connection conn = dataSource.getConnection()) {
-            PreparedStatement findUserStatement = conn.prepareStatement(findUser);
+        try(Connection conn = dataSource.getConnection();
+            PreparedStatement findUserStatement = conn.prepareStatement(findUser)) {
             findUserStatement.setString(1, username);
             findUserStatement.setString(2, password);
             try(ResultSet rs = findUserStatement.executeQuery()) {

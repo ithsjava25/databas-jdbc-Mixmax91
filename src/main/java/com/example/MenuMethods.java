@@ -8,6 +8,7 @@ public interface MenuMethods {
 
     void printMenu();
 
+    boolean validateCredentials(String username, String password);
     int checkForInt();
 
     void findAllMissions();

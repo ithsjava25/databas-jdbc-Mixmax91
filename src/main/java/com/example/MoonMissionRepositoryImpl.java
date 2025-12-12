@@ -22,13 +22,17 @@ public class MoonMissionRepositoryImpl implements MoonMissionRepository {
     /**
      * Stores datasource in an instance
      * @param dataSource used to connect to database
+     * @throws IllegalArgumentException if datasource is null
      */
     public MoonMissionRepositoryImpl(DataSource dataSource) {
+        if(dataSource == null) {
+            throw new IllegalArgumentException("DataSource must not be null");
+        }
         this.dataSource = dataSource;
     }
 
     /**
-     * Retrieves stores all from the moon_mission table in an arraylist.
+     * Retrieves all from the moon_mission table in an arraylist.
      * @return List of strings. Returns empty list when no data is found
      * @throws RuntimeException if a database access error occurs
      */
@@ -45,12 +49,11 @@ public class MoonMissionRepositoryImpl implements MoonMissionRepository {
                 return results;
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Failed to retrieve moon missions from database", e);
         }
     }
 
     /**
-     *
      * @param id used to search through mission_id for match
      * @return returns name of mission from spacecraft if match with id is found
      * @throws RuntimeException if a database access error occurs
@@ -70,12 +73,11 @@ public class MoonMissionRepositoryImpl implements MoonMissionRepository {
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Failed to retrieve moon mission by id from database", e);
         }
     }
 
     /**
-     *
      * @param year used to search through launch_date for missions
      * @return amount of missions for given year
      * @throws RuntimeException if a database access error occurs
@@ -94,7 +96,7 @@ public class MoonMissionRepositoryImpl implements MoonMissionRepository {
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Failed to retrieve mission count data by year from database", e);
         }
     }
 
